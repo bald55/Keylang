@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Keylang Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Lato', sans-serif;
+        text-align: center;
+        margin: 40px;
+        line-height: 1.6;
+        color: white;
+      }
+header {transition: transform 0.3s ease;}
+    </style>
+  </head>
+  <body style="background-color: #1e1e1e;">
+
+<header style="background-color: #99ff99; width: 100%; height: 60px; display: flex; align-items: center; padding: 0 10px; box-sizing: border-box; position: fixed; top: 0; left: 0; z-index: 1000;">
+<a href="index.html" style="display: inline-block;">
+<img src="Keylang_full_logo.png" alt="Keylang full logo" style="height: 50px;">
+</a>
+</header>
+
+<script> let lastY = 0;
+window.addEventListener('scroll', () => {
+document.querySelector('header').style.transform =
+window.scrollY > lastY ? 'translateY(-100%)' : 'translateY(0)';
+lastY = window.scrollY;
+});
+</script>
+
+<div style="background-color: #80ef80; padding: 10px; position: relative; text-align: center;">
+  <h1 style="font-size: 50px; margin: 0;">Keylang!!!</h1>
+  <p style="font-size: 20px; margin: 0;">v0.1.0</p>
+  <img src="Keylang_logo.png" alt="Keylang logo" style="height: 100px; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+</div>
+
+
+<br>
+
+<div style="background-color: #aaaaaa; padding: 10px;">
+<h3 style="font-size: 30px; margin: 0;">This key lime pie is half-baked :| ↓</h3>
+<p style="font-size: 20px; margin: 0;">This is an early release. Expect bugs and glitches</p>
+</div>
+
+    <p>Keylang is a simple Python-like programming LANGuage that puts emphasis on built in functions and KEYwords. <br> It's quite similar to Python right now but it will evolve over time <br> <br>
+      It's powered by Python, so you have to have that downloaded haha <br> </p>
+
+<a href="https://www.python.org/">Here's the Python page</a>
+
+      <h2>If you’re coming from Python:</h2>
+      <h4>(which unfortunately you're expected to, these docs aren't very helpful otherwise)</h4>
+      <p> def is replaced with func for simplicity<br>
+      : is replaced with opening ‘{‘ and closing ‘}’<br>
+      () is optional for functions that don’t have arguments. However, calling them you still use () haha<br>
+      Tabs and spaces are optional. Put them anyways they’re helpful<br><br><br>
+
+<h2>Helpful new functions and KEYwords:</h2>
+
+<table border="1" cellpadding="8" cellspacing="0" style="margin:auto; border-collapse: collapse; font-family: Lato, sans-serif;">
+  <tr style="background-color:#80ef80;">
+    <th>Functions and keywords</th>
+    <th>What it does</th>
+  </tr>
+<!--  <tr>
+    <td>if x == y {}</td>
+    <td>Only runs the code in the block if the condition is true</td>
+  </tr>
+  <tr>
+    <td>else {}</td>
+    <td>Only runs the code in the block if all previous statements were false</td>
+  </tr>
+  <tr>
+    <td>elif x == y {}</td>
+    <td>Only runs the code in the block if all previous statement were false AND the condition is true</td>
+  </tr>-->
+  <tr>
+    <td>loop(n) {}</td>
+    <td>Loops the code in the block an amount of times</td>
+  </tr>
+  <tr>
+    <td>loop() {}</td>
+    <td>Infinite loop</td>
+  </tr>
+  <tr>
+    <td>once {}</td>
+    <td>Won’t repeat code in the block after running it once</td>
+  </tr>
+  <tr>
+    <td>array()</td>
+    <td>Creates an array</td>
+  </tr>
+  <tr>
+    <td>dict()</td>
+    <td>Creates a dictionary</td>
+  </tr>
+  <tr>
+    <td>the_array_name[index]</td>
+    <td>Access one of an array’s value</td>
+  </tr>
+  <tr>
+    <td>dictionary_array_name[x]</td>
+    <td>Access one of a dictionaries value</td>
+  </tr>
+  <tr>
+    <td>random(n, n)</td>
+    <td>Picks one of the numbers provided</td>
+  </tr>
+  <tr>
+    <td>random_range(from, to)</td>
+    <td>Picks one of the numbers in the range of the numbers provided</td>
+  </tr>
+  <tr>
+    <td>spawn func_name()</td>
+    <td>Calls a function… but it runs in the background</td>
+  </tr>
+  <tr>
+    <td>private func_name()</td>
+    <td>Alias of 2 underscores</td>
+  </tr>
+  <tr>
+    <td>protected func_name()</td>
+    <td>Alias of 1 underscore</td>
+  </tr>
+</table>
+
+<h2>Some shortcuts you should know when using the editor:</h2>
+
+<table border="1" cellpadding="8" cellspacing="0" style="margin:auto; border-collapse: collapse; font-family: Lato, sans-serif;">
+  <tr style="background-color:#80ef80;">
+    <th>Shortcut</th>
+    <th>What it does</th>
+  </tr>
+  <tr>
+    <td>Ctrl K / Ctrl /</td>
+    <td>Comment out</td>
+  </tr>
+  <tr>
+    <td>Ctrl F</td>
+    <td>Find</td>
+  </tr>
+  <tr>
+    <td>Ctrl D</td>
+    <td>Select word</td>
+  </tr>
+  <tr>
+    <td>Ctrl Shift D</td>
+    <td>Duplicate line</td>
+  </tr>
+  <tr>
+    <td>Alt ↑ / Alt ↓</td>
+    <td>Move line up or down</td>
+  </tr>
+  <tr>
+    <td>Ctrl L</td>
+    <td>Select line</td>
+  </tr>
+  <tr>
+    <td>Tab and Shift+Tab</td>
+    <td>Indent or unindent selection</td>
+  </tr>
+</table>
+
+  </body>
+</html>
