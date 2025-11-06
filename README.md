@@ -8,4 +8,5 @@ It's quite similar to Python right now but it will evolve over time
 
 ***It's powered by Python, so you have to have that downloaded haha***
 
-### More info on the website (not here yet just wait)
+### More info on the website
+### https://bald55.github.io/keylang-site/
