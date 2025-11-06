@@ -1,7 +1,8 @@
 ## This key lime pie is half-baked :| ↓
 ### This is an early release. Expect bugs and glitches
 
-# Keylang v0.1.0 (very early yes)
+Latest version:
+# Keylang v0.1.1 (NOT AS very early yes)
 
 Keylang is a simple Python-like programming LANGuage that puts emphasis on built in functions and KEYwords.
 It's quite similar to Python right now but it will evolve over time
