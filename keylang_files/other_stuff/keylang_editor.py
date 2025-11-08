@@ -9,7 +9,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 symbols = sorted(set([
-"False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "loop", "wait", "once", "array", "dict", "random", "random_range", "spawn",
+"False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "loop", "wait", "once", "array", "dict", "random", "random_range", "spawn", "'s",
 
 "abs", "aiter", "all", "anext", "any", "ascii", "bin", "bool", "breakpoint", "bytearray", "bytes", "callable", "chr", "classmethod", "compile", "complex", "delattr", "dir", "divmod", "enumerate", "eval", "exec", "filter", "float", "format", "frozenset", "getattr", "globals", "hasattr", "hash", "help", "hex", "id", "input", "int", "isinstance", "issubclass", "iter", "len", "list", "locals", "map", "max", "memoryview", "min", "next", "object", "oct", "open", "ord", "pow", "print", "property", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted", "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip", "__import__",
 
@@ -244,38 +244,8 @@ def open_editor(filepath=None):
  # highlighting
 # highlighting
 
-# keywords
+# keywords actually nope later
     def highlight(event=None):
-        text.config(undo=False)
-
-        text.tag_remove("keyword", "1.0", tk.END)
-        keywords = ["False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "spawn"]
-
-        for f in keywords:
-            start = "1.0"
-            while True:
-                pos = text.search(rf"\m{f}\M", start, stopindex=tk.END, regexp=True)
-                if not pos:
-                    break
-                end = f"{pos}+{len(f)}c"
-                text.tag_add("keyword", pos, end)
-                start = end
-        text.tag_config("keyword", foreground="#ff5555", font=("Consolas", 12, "bold"))
-
-        for kw in symbols:
-            if kw in keywords:
-                continue
-            start = "1.0"
-            while True:
-                pos = text.search(rf"\m{kw}\M", start, stopindex=tk.END, regexp=True)
-                if not pos:
-                    break
-                end = f"{pos}+{len(kw)}c"
-                text.tag_add("keywordscam", pos, end)
-                start = end
-        text.tag_config("keywordscam", foreground="#c586c0", font=("Consolas", 12))
-
-
 
 # variables
         text.tag_remove("var", "1.0", tk.END)
@@ -304,6 +274,41 @@ def open_editor(filepath=None):
                 start = f"{i + 1}.{match.start()}"
                 end   = f"{i + 1}.{match.end()}"
                 text.tag_add("number", start, end)
+
+
+# real keywords
+        text.config(undo=False)
+
+        text.tag_remove("keyword", "1.0", tk.END)
+        keywords = ["False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "spawn", "'s"]
+
+        for f in keywords:
+            start = "1.0"
+            while True:
+                if f == "'s":
+                    pos = text.search("'s", start, stopindex=tk.END)
+                else:
+                    pos = text.search(rf"\m{f}\M", start, stopindex=tk.END, regexp=True)
+                if not pos:
+                    break
+                end = f"{pos}+{len(f)}c"
+                text.tag_add("keyword", pos, end)
+                start = end
+        text.tag_config("keyword", foreground="#ff5555", font=("Consolas", 12, "bold"))
+
+        for kw in symbols:
+            if kw in keywords:
+                continue
+            start = "1.0"
+            while True:
+                pos = text.search(rf"\m{f}\M", start, stopindex=tk.END, regexp=True)
+
+                if not pos:
+                    break
+                end = f"{pos}+{len(kw)}c"
+                text.tag_add("keywordscam", pos, end)
+                start = end
+        text.tag_config("keywordscam", foreground="#c586c0", font=("Consolas", 12))
 
 
 
@@ -340,6 +345,8 @@ def open_editor(filepath=None):
                 match = re.search(r"\b\w+$", cleaned)
                 if match:
                     word = match.group()
+                    if word == "s":
+                        continue
                     col = line.find(word)
                     start = f"{i + 1}.{col}"
                     end = f"{i + 1}.{col + len(word)}"
@@ -389,7 +396,7 @@ def open_editor(filepath=None):
         cursor_index = text.index("insert")
         line, col = map(int, cursor_index.split("."))
         line_text = text.get(f"{line}.0", f"{line}.end")
-        prefix = re.findall(r"\w+$", line_text[:col])
+        prefix = re.findall(r"[\w']+$", line_text[:col])
         return prefix[0] if prefix else ""
 
     def show_popup(matches):
@@ -480,7 +487,7 @@ def open_editor(filepath=None):
             "[": "]",
             "{": "}",
             "\"": "\"",
-            "'": "'"
+            #"'": "'"
         }
         char = event.char
         if char in pairs:
@@ -496,6 +503,7 @@ def open_editor(filepath=None):
 
     def comment_out(event=None):
         if text.tag_ranges("sel"):
+            # iters = 0
             start = text.index("sel.first linestart")
             end   = text.index("sel.last lineend")
             line = start
@@ -505,6 +513,9 @@ def open_editor(filepath=None):
                 else:
                     text.insert(line, "#")
                 line = text.index(f"{line}+1line")
+                iters += 1
+                # if iters > 1000:
+                    # break
         else:
             line_start = text.index("insert linestart")
             if text.get(line_start, f"{line_start}+1c") == "#":
@@ -557,7 +568,6 @@ def open_editor(filepath=None):
         return "break"
 
     def tabtabtab(event=None):
-        return
         if text.tag_ranges("sel"):
             start = text.index("sel.first linestart")
             end = text.index("sel.last lineend")
@@ -570,7 +580,6 @@ def open_editor(filepath=None):
             text.insert("insert", "\t")
             return "break"
     def untabuntabuntab(event=None):
-        return
         if text.tag_ranges("sel"):
             start = text.index("sel.first linestart")
             end = text.index("sel.last lineend")

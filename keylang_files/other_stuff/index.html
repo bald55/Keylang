@@ -13,6 +13,13 @@
         color: white;
       }
 header {transition: transform 0.3s ease;}
+.key { color:#ff5555; font-weight:bold; }
+.func { color:#c586c0; }
+.num { color:#61afef; }
+.YELLOW { color:#ffee8c; }
+.bold { font-weight:bold; }
+.lime { color:#93c47d; }
+.comment { color:gray; }
     </style>
   </head>
   <body style="background-color: #1e1e1e;">
@@ -57,6 +64,28 @@ lastY = window.scrollY;
       : is replaced with opening ‘{‘ and closing ‘}’<br>
       () is optional for functions that don’t have arguments. However, calling them you still use () haha<br>
       Tabs and spaces are optional. Put them anyways they’re helpful<br><br><br>
+	  
+<h2>Preview of valid Keylang</h2>
+<div style="background-color: #1e1e1e; padding: 10px;">
+<pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code>
+<span class="bold">vari_name</span> <span class="func">dict</span>(<span class="YELLOW">"a"</span> = <span class="func">random</span>(<span class="num">67</span>, <span class="num">68</span>), <span class="YELLOW">"b"</span> = <span class="num">2763</span>)
+
+<span class="key">func</span> <span class="lime">cool_func</span>{
+    <span class="func">print</span>(<span class="YELLOW">"hi"</span>)
+	<span class="lime">loop</span>(<span class="num">3</span>){
+		<span class="func">wait</span>(<span class="num">1</span>)
+		<span class="key">self 's</span> <span class="bold">scale</span> * <span class="func">random</span>(<span class="bold">vari_name</span>)
+		}
+	}
+	
+<span class="comment"># prints hi, then, repeating 3 times, waits 1 second before multiplying self's scale by a random value from the dictionary vari_name.</span>
+</code>
+</pre>
+</div>
+<p> <span class="comment"> yep pretty similar to python currently </span> </p>
+
+<br> <br>
 
 <h2>Helpful new functions and KEYwords:</h2>
 
@@ -88,6 +117,10 @@ lastY = window.scrollY;
   <tr>
     <td>once {}</td>
     <td>Won’t repeat code in the block after running it once</td>
+  </tr>
+  <tr>
+    <td>'s</td>
+    <td>Keyword alias of the . accessor, useful when you're fed up with . and want good grammar</td>
   </tr>
   <tr>
     <td>array()</td>
@@ -124,6 +157,18 @@ lastY = window.scrollY;
   <tr>
     <td>protected func_name()</td>
     <td>Alias of 1 underscore</td>
+  </tr>
+  <tr>
+    <td>print_vars</td>
+    <td>Prints all variables and their values</td>
+  </tr>
+  <tr>
+    <td>print_nones</td>
+    <td>Prints all variables with a value of None</td>
+  </tr>
+  <tr>
+    <td>print_all</td>
+    <td>Prints a LOT of stuff basically</td>
   </tr>
 </table>
 
@@ -174,8 +219,8 @@ lastY = window.scrollY;
   <p> <strong> You can download it directly from here </strong> </p>
   <a href="https://github.com/bald55/Keylang/releases/download/v0.1.1/keylang-0.1.1.zip" 
   style="display: inline-block;
-  background-color: red;
-  color: white;
+  background-color: #80ef80;
+  color: teal;
   padding: 12px 24px;
   text-decoration: none;
   border-radius: 2px;

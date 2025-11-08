@@ -9,7 +9,6 @@ current_func = None
 once_id = 0
 loop_id = 0
 
-
 print("__once_done = set()")
 print("import asyncio")
 print("import types")
@@ -36,6 +35,14 @@ print("\t\tif name == 'asyncio' or name == 'types':")
 print("\t\t\tcontinue")
 print("\t\tprint(f\"{name} = {value!r}\")")
 
+def replace_accessor(line):
+    parts = re.split(r'(".*?"|\'.*?\')', line)
+    new_parts = [
+        re.sub(r"\s+'s\s+", ".", p) if not (p.startswith('"') or p.startswith("'")) else p
+        for p in parts
+    ]
+    return "".join(new_parts)
+
 def replace_random(m):
     arg = m.group(1).strip()
     parts = [p.strip() for p in arg.split(",")]
@@ -60,13 +67,14 @@ def has_inline_comment(line):
                 in_string = False
                 quote_char = None
         elif ch == "#" and not in_string:
-            # '#' outside a string and not at start = inline comment
             if i > 0 and not line[:i].lstrip().startswith("#"):
                 return True
     return False
 
 for raw in sys.stdin:
     line = raw.rstrip()
+    
+    line = replace_accessor(line)
 
     if not line.strip():
         print("")
