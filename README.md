@@ -19,6 +19,7 @@ result = subprocess.run(["python", "other_stuff/preprocess.py"], input=kl_source
 python_code = result.stdout
 exec(python_code, {"__name__": "__main__"})
 ```
+Auto preprocessing comes later this is an early release ok
 
 ### More info on the website
 ### https://bald55.github.io/keylang-site/
