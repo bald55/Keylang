@@ -9,7 +9,7 @@ Latest version:
 Keylang is a simple Python-like programming LANGuage that puts emphasis on built in functions and KEYwords.
 It's quite similar to Python right now but it will evolve over time
 
-***It's powered by Python (specifically 3.13+), so you have to have that downloaded haha***
+***It's powered by Python (specifically I'm testing with 3.13+), so you have to have that downloaded haha***
 
 
 If you want to load a script, you can use this and change it a little
