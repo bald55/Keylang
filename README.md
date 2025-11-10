@@ -1,4 +1,4 @@
-## Keylang v1.0.0 coming soon! probably <br><br><br>
+## Keylang v1.0.0 coming very soon!<br><br><br>
 
 ## This key lime pie is half-baked :| ↓
 ### This is an early release. Expect bugs and glitches
