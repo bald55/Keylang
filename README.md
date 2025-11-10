@@ -28,6 +28,7 @@ Or if you are using v1.0.0 (yeah how would you it's not out yet)
 from runner.keylang_runner import run_kl
 run_kl("test.kl") # replace with file... path you want to run
 ```
+See? More reasons to look forward to v1.0.0
 
 ### More info on the website
 ### https://bald55.github.io/keylang-site/
