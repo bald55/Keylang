@@ -1,4 +1,4 @@
-# v1.0.0 is OUT!!! Ignore how the tag says v0.1.1
+# v1.0.0 is OUT!!! Ignore how the tag says v0.1.1 in the ReadMe
 
 ## This key lime pie is kinda half-baked :| ↓
 ### This is NO LONGER AN early release!!! But still expect bugs and glitches
