@@ -8,8 +8,10 @@ import threading
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+keywords = ["False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "spawn", "'s", "f", "embed_lua"]
+
 symbols = sorted(set([
-"False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "loop", "wait", "once", "array", "dict", "random", "random_range", "spawn",
+"False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "loop", "wait", "once", "array", "dict", "random", "random_range", "spawn", "'s", "f", "embed_lua",
 
 "abs", "aiter", "all", "anext", "any", "ascii", "bin", "bool", "breakpoint", "bytearray", "bytes", "callable", "chr", "classmethod", "compile", "complex", "delattr", "dir", "divmod", "enumerate", "eval", "exec", "filter", "float", "format", "frozenset", "getattr", "globals", "hasattr", "hash", "help", "hex", "id", "input", "int", "isinstance", "issubclass", "iter", "len", "list", "locals", "map", "max", "memoryview", "min", "next", "object", "oct", "open", "ord", "pow", "print", "property", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted", "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip", "__import__",
 
@@ -18,7 +20,12 @@ symbols = sorted(set([
 "BaseException", "Exception", "ArithmeticError", "BufferError", "LookupError", "AssertionError", "AttributeError", "EOFError", "FloatingPointError", "GeneratorExit", "ImportError", "ModuleNotFoundError", "IndexError", "KeyError", "KeyboardInterrupt", "MemoryError", "NameError", "NotImplementedError", "OSError", "OverflowError", "RecursionError", "ReferenceError", "RuntimeError", "StopIteration", "StopAsyncIteration", "SyntaxError", "IndentationError", "TabError", "SystemError", "SystemExit", "TypeError", "UnboundLocalError", "UnicodeError", "UnicodeEncodeError", "UnicodeDecodeError", "UnicodeTranslateError", "ValueError", "ZeroDivisionError"
 ]))
 
+var_pattern  = re.compile(r"\b([A-Za-z_]\w*)\s*=")
+func_pattern = re.compile(r"\bfunc\s+([A-Za-z_]\w*)")
+
+
 popup = None
+text = None
 
 class TextRedirector:
     def __init__(self, widget):
@@ -39,6 +46,16 @@ class TextRedirector:
             pass
     def flush(self):
         pass
+        
+def collect_symbols():
+    content = text.get("1.0", "end-1c")
+    found = set()
+    for m in var_pattern.finditer(content):
+        found.add(m.group(1))
+    for m in func_pattern.finditer(content):
+        found.add(m.group(1))
+    return list(found)
+
 
 def open_editor(filepath=None):
 
@@ -54,24 +71,27 @@ def open_editor(filepath=None):
         # im old! geheheheh
         if current_proc and current_proc.poll() is None:
             current_proc.terminate()
+            
+        exe = sys.executable
+        if exe.endswith("pythonw.exe"):
+            exe = exe.replace("pythonw.exe", "python.exe")
 
-        try:
-            output_text = show_output()
-            redirector = TextRedirector(output_text)
+        current_proc = subprocess.Popen(
+            [exe, "-u", os.path.join(BASE_DIR, "..", "runner", "keylang_runner.py"), target],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            creationflags=subprocess.CREATE_NO_WINDOW
+        )
 
-            current_proc = subprocess.Popen([sys.executable, "-u", os.path.join(BASE_DIR, "keylang_runner.py"), target], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        output_text = show_output()
+        redirector = TextRedirector(output_text)
 
-            def pump_output():
-                for line in current_proc.stdout:
-                    redirector.write(line)
-                for line in current_proc.stderr:
-                    redirector.write(line)
+        def pump_output():
+            for line in current_proc.stdout:
+                redirector.write(line)
 
-            threading.Thread(target=pump_output, daemon=True).start()
-
-
-        except Exception as e:
-            print(f"Error: {e}")
+        threading.Thread(target=pump_output, daemon=True).start()
 
 # run keylang
 # run keylang
@@ -108,6 +128,13 @@ def open_editor(filepath=None):
         bordercolor="#1e1e1e",
         arrowcolor="#d4d4d4"
 )
+
+    style.map(
+        "Vertical.TScrollbar",
+        background=[("disabled", "#2a2a2a")],
+        arrowcolor=[("disabled", "#888888")]
+    )
+
     editor = tk.Toplevel()
     editor.title("Keylang Editor")
     editor.iconbitmap(os.path.join(BASE_DIR, "Keylang_logo.ico"))
@@ -115,6 +142,7 @@ def open_editor(filepath=None):
     container = tk.Frame(editor)
     container.pack(side="top", fill="both", expand=True)
 
+    global text
     text = tk.Text(
         container,
         wrap="none",
@@ -244,38 +272,8 @@ def open_editor(filepath=None):
  # highlighting
 # highlighting
 
-# keywords
+# keywords actually nope later
     def highlight(event=None):
-        text.config(undo=False)
-
-        text.tag_remove("keyword", "1.0", tk.END)
-        keywords = ["False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "spawn"]
-
-        for f in keywords:
-            start = "1.0"
-            while True:
-                pos = text.search(rf"\m{f}\M", start, stopindex=tk.END, regexp=True)
-                if not pos:
-                    break
-                end = f"{pos}+{len(f)}c"
-                text.tag_add("keyword", pos, end)
-                start = end
-        text.tag_config("keyword", foreground="#ff5555", font=("Consolas", 12, "bold"))
-
-        for kw in symbols:
-            if kw in keywords:
-                continue
-            start = "1.0"
-            while True:
-                pos = text.search(rf"\m{kw}\M", start, stopindex=tk.END, regexp=True)
-                if not pos:
-                    break
-                end = f"{pos}+{len(kw)}c"
-                text.tag_add("keywordscam", pos, end)
-                start = end
-        text.tag_config("keywordscam", foreground="#c586c0", font=("Consolas", 12))
-
-
 
 # variables
         text.tag_remove("var", "1.0", tk.END)
@@ -304,6 +302,40 @@ def open_editor(filepath=None):
                 start = f"{i + 1}.{match.start()}"
                 end   = f"{i + 1}.{match.end()}"
                 text.tag_add("number", start, end)
+
+
+# real keywords
+        text.config(undo=False)
+
+        text.tag_remove("keyword", "1.0", tk.END)
+
+        for f in keywords:
+            start = "1.0"
+            while True:
+                if f == "'s":
+                    pos = text.search("'s", start, stopindex=tk.END)
+                else:
+                    pos = text.search(rf"\m{f}\M", start, stopindex=tk.END, regexp=True)
+                if not pos:
+                    break
+                end = f"{pos}+{len(f)}c"
+                text.tag_add("keyword", pos, end)
+                start = end
+        text.tag_config("keyword", foreground="#ff5555", font=("Consolas", 12, "bold"))
+
+        for kw in symbols:
+            if kw in keywords:
+                continue
+            start = "1.0"
+            while True:
+                pos = text.search(rf"\m{kw}\M", start, stopindex=tk.END, regexp=True)
+
+                if not pos:
+                    break
+                end = f"{pos}+{len(kw)}c"
+                text.tag_add("keywordscam", pos, end)
+                start = end
+        text.tag_config("keywordscam", foreground="#c586c0", font=("Consolas", 12))
 
 
 
@@ -340,24 +372,59 @@ def open_editor(filepath=None):
                 match = re.search(r"\b\w+$", cleaned)
                 if match:
                     word = match.group()
+                    if word == "s":
+                        continue
                     col = line.find(word)
                     start = f"{i + 1}.{col}"
                     end = f"{i + 1}.{col + len(word)}"
                     text.tag_add("name", start, end)
+                    
 
+
+# embed lua
+        text.tag_remove("embed_lua", "1.0", tk.END)
+        text.tag_config("embed_lua", foreground="#1E90FF", font=("Fira Mono", 12,))
+
+        for match in re.finditer(r"\bembed_lua\b", text.get("1.0", tk.END)):
+            start = f"1.0+{match.start()}c"
+            end   = f"1.0+{match.end()}c"
+            text.tag_add("embed_lua", start, end)    
 
 
 # strings
         text.tag_remove("string", "1.0", tk.END)
         text.tag_config("string", foreground="#ffee8c", font=("Consolas", 12, "italic"))
 
-        matches = re.finditer(r'(["\'])(.*?)(\1)', text.get("1.0", tk.END))
-        for match in matches:
-            start_index = match.start()
-            end_index = match.end()
-            start = f"1.0 + {start_index}c"
-            end = f"1.0 + {end_index}c"
-            text.tag_add("string", start, end)
+        code = text.get("1.0", tk.END)
+
+        for match in re.finditer(r'(["\'])(.*?)(\1)', code):
+            inner = match.group(2)
+            inner_start = match.start(2)
+            after = code[match.end():]
+            
+            if after.startswith("s"):
+                continue
+
+            last = 0
+            for brace_match in re.finditer(r'(?<!\{)\{[^{}]*\}(?!\})', inner):
+                brace_start = brace_match.start()
+                brace_end = brace_match.end()
+
+                if brace_start > last:
+                    gap_start = inner_start + last
+                    gap_end = inner_start + brace_start
+                    text.tag_add("string", f"1.0+{gap_start}c", f"1.0+{gap_end}c")
+
+                last = brace_end
+
+            text.tag_add("string", f"1.0+{match.start()}c", f"1.0+{match.start(2)}c")
+
+            text.tag_add("string", f"1.0+{match.start(2) + len(inner)}c", f"1.0+{match.end()}c")
+
+            if last < len(inner):
+                final_start = inner_start + last
+                final_end = inner_start + len(inner)
+                text.tag_add("string", f"1.0+{final_start}c", f"1.0+{final_end}c")
 
 
 
@@ -382,6 +449,32 @@ def open_editor(filepath=None):
                 end = f"{i + 1}.{col + len(word)}"
                 text.tag_add("comment", start, end)
 
+
+
+# lua contents
+        text.tag_remove("contents", "1.0", tk.END)
+        text.tag_config("contents", foreground="white", font=("Fira Mono", 12,))
+        
+        start = line.find("{")
+        end = line.find("}", start)
+
+        code = text.get("1.0", tk.END)
+
+        for match in re.finditer(r"\bembed_lua\s*\{[^{}]*\}", code):
+            line_start = code.rfind("\n", 0, match.start()) + 1
+            line = code[line_start:match.start()]
+            if re.match(r"^\s*#", line):
+                continue
+
+            full_start = match.start()
+            full_end = match.end()
+
+            real_start = code.find("{", full_start, full_end)
+            real_end = code.find("}", real_start, full_end)
+
+            text.tag_add("contents", f"1.0+{real_start}c", f"1.0+{real_end}c")
+
+
         text.config(undo=True)
 
 
@@ -389,7 +482,7 @@ def open_editor(filepath=None):
         cursor_index = text.index("insert")
         line, col = map(int, cursor_index.split("."))
         line_text = text.get(f"{line}.0", f"{line}.end")
-        prefix = re.findall(r"\w+$", line_text[:col])
+        prefix = re.findall(r"[\w']+$", line_text[:col])
         return prefix[0] if prefix else ""
 
     def show_popup(matches):
@@ -442,12 +535,17 @@ def open_editor(filepath=None):
         autosave()
         highlight()
         update_line_numbers()
+
+        dynamic_symbols = collect_symbols()
+        better_symbols = list(symbols)
+        better_symbols.extend(dynamic_symbols)
+        
         token = get_current_token()
         if token:
-            if token in symbols:
+            if token in better_symbols:
                 hide_popup()
                 return
-            matches = [s for s in symbols if s.startswith(token) and s != token]
+            matches = [s for s in better_symbols if s.startswith(token) and s != token]
             if matches:
                 show_popup(matches)
             else:
@@ -468,8 +566,11 @@ def open_editor(filepath=None):
         hide_popup()
 
     def confirm_top_suggestion(event=None):
-        if popup:
-            lb = popup.winfo_children()[0]
+        global popup
+        if popup and popup.winfo_exists():
+            # descend into the frame to get the listbox
+            frame = popup.winfo_children()[0]
+            lb = frame.winfo_children()[0]
             if lb.size() > 0:
                 select(lb.get("active"))
             return "break"
@@ -480,7 +581,7 @@ def open_editor(filepath=None):
             "[": "]",
             "{": "}",
             "\"": "\"",
-            "'": "'"
+            #"'": "'"
         }
         char = event.char
         if char in pairs:
@@ -496,15 +597,14 @@ def open_editor(filepath=None):
 
     def comment_out(event=None):
         if text.tag_ranges("sel"):
-            start = text.index("sel.first linestart")
-            end   = text.index("sel.last lineend")
-            line = start
-            while text.compare(line, "<=", end):
-                if text.get(line, f"{line}+1c") == "#":
-                    text.delete(line, f"{line}+1c")
+            start_line = int(text.index("sel.first").split(".")[0])
+            end_line   = int(text.index("sel.last").split(".")[0])
+            for line_num in range(start_line, end_line + 1):
+                line_start = f"{line_num}.0"
+                if text.get(line_start, f"{line_start}+1c") == "#":
+                    text.delete(line_start, f"{line_start}+1c")
                 else:
-                    text.insert(line, "#")
-                line = text.index(f"{line}+1line")
+                    text.insert(line_start, "#")
         else:
             line_start = text.index("insert linestart")
             if text.get(line_start, f"{line_start}+1c") == "#":
@@ -512,6 +612,7 @@ def open_editor(filepath=None):
             else:
                 text.insert(line_start, "#")
         return "break"
+
 
     def select_line(event=None):
         start = text.index("insert linestart")
@@ -557,7 +658,6 @@ def open_editor(filepath=None):
         return "break"
 
     def tabtabtab(event=None):
-        return
         if text.tag_ranges("sel"):
             start = text.index("sel.first linestart")
             end = text.index("sel.last lineend")
@@ -570,7 +670,6 @@ def open_editor(filepath=None):
             text.insert("insert", "\t")
             return "break"
     def untabuntabuntab(event=None):
-        return
         if text.tag_ranges("sel"):
             start = text.index("sel.first linestart")
             end = text.index("sel.last lineend")
@@ -588,7 +687,7 @@ def open_editor(filepath=None):
 
 
     # text.bind("<Tab>", confirm_top_suggestion)
-    text.bind("<Return>", confirm_top_suggestion)
+    text.bind("<Return>", confirm_top_suggestion, add="+")
 
     text.unbind_class("Text", "<Control-k>")
     text.bind("<Control-k>", comment_out)

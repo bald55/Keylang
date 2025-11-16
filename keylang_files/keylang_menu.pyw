@@ -127,7 +127,7 @@ button("Quit", quit_app).pack(pady=5)
 bottom_label = tk.Label(root, text="version 0.0.1.alpha", font=("Lato", 10), fg="grey", bg="#1e1e1e")
 bottom_label.place(relx=0.0, rely=1.0, anchor="sw", x=10, y=-10)
 
-link = tk.Label(root, text="Official Website", font=("Lato", 12, "underline"), fg="blue", bg="#1e1e1e", cursor="hand2")
+link = tk.Label(root, text="Go to amazing website", font=("Lato", 12, "underline"), fg="#61afef", bg="#1e1e1e", cursor="hand2")
 link.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
 link.bind("<Button-1>", lambda e: webbrowser.open("https://bald55.github.io/keylang-site/"))
 
