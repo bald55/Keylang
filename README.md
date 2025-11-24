@@ -2,11 +2,11 @@
 ## - A programming language that runs on Python and embeds Lua!!! It puts a lot of emphasis on built in functions and KEYwords
 ##
 
-**v1.0.0 is OUT!!! Ignore how the tag says v0.1.1 in the ReadMe**
+## **v1.0.0 is OUT!!! Ignore how the tag says v0.1.1 in the ReadMe**
 **Soon v2.0.0!**
 
-### This key lime pie is kinda half-baked :| ↓
-#### This is NO LONGER AN early release!!! But still expect bugs and glitches
+## This key lime pie is kinda half baked :| ↓
+### This is NO LONGER AN early release!!! But still expect bugs and glitches
 
 Latest version:
 # Keylang v1.0.0 (NOT AS very early yes)
