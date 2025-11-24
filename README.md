@@ -1,4 +1,5 @@
-# Keylang - A programming language that runs on Python and embeds Lua!!! It puts a lot of emphasis on built in functions and KEYwords
+# Keylang
+## - A programming language that runs on Python and embeds Lua!!! It puts a lot of emphasis on built in functions and KEYwords
 ##
 
 **v1.0.0 is OUT!!! Ignore how the tag says v0.1.1 in the ReadMe**
