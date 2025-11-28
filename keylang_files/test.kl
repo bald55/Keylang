@@ -25,6 +25,27 @@ wait(1)
 print(f"loop spawn bg null None once best []{1+1} test")
 # f string yeahhh {}}}}{}}
 
+print("Lua embed test")
+
+embed_lua {
+print("this is lua")
+
+-- comment
+local sum = 2 + 3
+print("2 + 3 = " .. sum)
+
+-- thy shalleth work!
+for i = 1, 5 do
+    print("Lua loop iteration " .. i)
+end
+}
+
+print("Wow that worked")
+wait(1)
+
+print(f"loop spawn bg null None once best []{1+1} test")
+# f string yeahhh {}}}}{}}
+
 func bg {
 loop {
 print("this runs in the background")
