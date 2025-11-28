@@ -5,7 +5,7 @@
 ## **v2.0.0 is OUT!!!**
 
 Latest version:
-# Keylang v1.0.0 (NOT AS very early yes)
+# Keylang v2.0.0 (NOT AS very early yes)
 
 Keylang is a simple Python-like programming LANGuage that puts emphasis on built in functions and KEYwords.
 It's quite similar to Python right now but it will evolve over time
