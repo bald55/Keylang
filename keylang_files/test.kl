@@ -1,8 +1,29 @@
-x = 2
-data = array("a", 1, "b", 2)
-data2 = dict("a" = 2, "#" = 2763)
-data3 = dict("r" = None)
-null = None
+var x = 2
+var data = array("a", 1, "b", 2)
+var data2 = dict("a" = 2, "#" = 2763)
+var data3 = dict("r" = None)
+var null = None
+
+print("Lua embed test")
+
+embed_lua {
+print("this is lua")
+
+-- comment
+local sum = 2 + 3
+print("2 + 3 = " .. sum)
+
+-- thy shalleth work!
+for i = 1, 5 do
+    print("Lua loop iteration " .. i)
+end
+}
+
+print("Wow that worked")
+wait(1)
+
+print(f"loop spawn bg null None once best []{1+1} test")
+# f string yeahhh {}}}}{}}
 
 func bg {
 loop {

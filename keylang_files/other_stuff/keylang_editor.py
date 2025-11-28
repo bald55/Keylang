@@ -6,19 +6,46 @@ import traceback
 import sys
 import threading
 import os
+import ast
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-symbols = sorted(set([
-"False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "loop", "wait", "once", "array", "dict", "random", "random_range", "spawn",
+keywords = ["False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "del", "elif", "else", "except", "finally", "for", "from", "if", "import", "in", "is", "lambda", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "spawn", "'s", "f", "embed_lua", "var"]
 
-"abs", "aiter", "all", "anext", "any", "ascii", "bin", "bool", "breakpoint", "bytearray", "bytes", "callable", "chr", "classmethod", "compile", "complex", "delattr", "dir", "divmod", "enumerate", "eval", "exec", "filter", "float", "format", "frozenset", "getattr", "globals", "hasattr", "hash", "help", "hex", "id", "input", "int", "isinstance", "issubclass", "iter", "len", "list", "locals", "map", "max", "memoryview", "min", "next", "object", "oct", "open", "ord", "pow", "print", "property", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted", "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip", "__import__",
+symbols = sorted(set([
+"False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "del", "elif", "else", "except", "finally", "for", "from", "if", "import", "in", "is", "lambda", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "loop", "wait", "once", "array", "dict", "random", "random_range", "spawn", "'s", "f", "embed_lua", "var", "looprate",
+
+"abs", "aiter", "all", "anext", "any", "ascii", "bin", "bool", "breakpoint", "bytearray", "bytes", "callable", "chr", "classmethod", "compile", "complex", "delattr", "dir", "divmod", "enumerate", "eval", "exec", "filter", "float", "format", "frozenset", "getattr", "hasattr", "hash", "help", "hex", "id", "input", "int", "isinstance", "issubclass", "iter", "len", "list", "locals", "map", "max", "memoryview", "min", "next", "object", "oct", "open", "ord", "pow", "print", "property", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted", "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip", "__import__",
 
 "Ellipsis", "NotImplemented",
 
 "BaseException", "Exception", "ArithmeticError", "BufferError", "LookupError", "AssertionError", "AttributeError", "EOFError", "FloatingPointError", "GeneratorExit", "ImportError", "ModuleNotFoundError", "IndexError", "KeyError", "KeyboardInterrupt", "MemoryError", "NameError", "NotImplementedError", "OSError", "OverflowError", "RecursionError", "ReferenceError", "RuntimeError", "StopIteration", "StopAsyncIteration", "SyntaxError", "IndentationError", "TabError", "SystemError", "SystemExit", "TypeError", "UnboundLocalError", "UnicodeError", "UnicodeEncodeError", "UnicodeDecodeError", "UnicodeTranslateError", "ValueError", "ZeroDivisionError"
 ]))
 
+lua_symbols = sorted(set(["assert", "error", "print", "type", "tostring", "tonumber", "select", "next", "pairs", "ipairs", "rawget", "rawset", "rawequal", "getmetatable", "setmetatable", "dofile", "load", "loadfile", "pcall", "xpcall", "_G", "_VERSION",
+
+    "math.abs", "math.acos", "math.asin", "math.atan", "math.ceil", "math.cos", "math.deg", "math.exp", "math.floor", "math.fmod", "math.huge", "math.log", "math.max", "math.min", "math.pi", "math.pow", "math.rad", "math.random", "math.randomseed", "math.sin", "math.sqrt", "math.tan",
+    
+    "string.byte", "string.char", "string.find", "string.format", "string.gmatch", "string.gsub", "string.len", "string.lower", "string.match", "string.rep", "string.reverse", "string.sub", "string.upper",
+    
+    "table.concat", "table.insert", "table.remove", "table.sort",
+    
+    "os.clock", "os.date", "os.difftime", "os.execute", "os.exit", "os.getenv", "os.remove", "os.rename", "os.setlocale", "os.time", "os.tmpname",
+    
+    "io.close", "io.flush", "io.input", "io.lines", "io.open", "io.output", "io.read", "io.write", "io.type",
+    
+    "debug.debug", "debug.gethook", "debug.getinfo", "debug.getlocal", "debug.getmetatable", "debug.getregistry", "debug.getupvalue", "debug.sethook", "debug.setlocal", "debug.setmetatable", "debug.setupvalue", "debug.traceback"]))
+
+var_pattern  = re.compile(r"\b([A-Za-z_]\w*)\s*=")
+func_pattern = re.compile(r"\bfunc\s+([A-Za-z_]\w*)")
+
+bookmarks = []
+bookmarks_location = []
+
+
 popup = None
+text = None
+
+filename = None
 
 class TextRedirector:
     def __init__(self, widget):
@@ -40,12 +67,61 @@ class TextRedirector:
     def flush(self):
         pass
 
-def open_editor(filepath=None):
+        
+def bookmark_save():
+    with open(f"other_stuff/cache/{filename}_bookmark_cache.txt", "w", encoding="utf-8") as f1:
+        for x in bookmarks:
+            f1.write(f"{x}\n")
+    with open(f"other_stuff/cache/{filename}_bookmark_location_cache.txt", "w", encoding="utf-8") as f2:
+        for x in bookmarks_location:
+            f2.write(f"{x}\n")
+    pass
+    
+def bookmark_load():
+    global bookmarks, bookmarks_location
+    bookmarks = []
+    bookmarks_location = []
+    with open(f"other_stuff/cache/{filename}_bookmark_cache.txt", "a", encoding="utf-8") as f:
+        f.write("")
+    with open(f"other_stuff/cache/{filename}_bookmark_location_cache.txt", "a", encoding="utf-8") as f:
+        f.write("")
+    with open(f"other_stuff/cache/{filename}_bookmark_cache.txt", "r", encoding="utf-8") as f1:
+        bookmarks = [line.strip() for line in f1 if line.strip()]
+    with open(f"other_stuff/cache/{filename}_bookmark_location_cache.txt", "r", encoding="utf-8") as f2:
+        bookmarks_location = [
+            ast.literal_eval(line.strip())
+            for line in f2 if line.strip()
+        ]
+        # for bm in bookmarks_location:
+            # text.tag_add("bookmarked", bm["location"], f"{bm['location']}+1c")
+    pass
 
+        
+def lua():
+    cursor_index = text.index("insert")
+    tags = text.tag_names(cursor_index)
+    return "contents" in tags
+
+        
+def collect_symbols():
+    content = text.get("1.0", "end-1c")
+    found = set()
+    for m in var_pattern.finditer(content):
+        found.add(m.group(1))
+    for m in func_pattern.finditer(content):
+        found.add(m.group(1))
+    return list(found)
+
+
+def open_editor(filepath=None):
+    global filename
+    
     current_proc = None
 
     match_positions = []
     current_match_index = -1
+    
+    filename = os.path.basename(filepath)
     def run_script():
         nonlocal current_proc
         autosave()
@@ -54,24 +130,27 @@ def open_editor(filepath=None):
         # im old! geheheheh
         if current_proc and current_proc.poll() is None:
             current_proc.terminate()
+            
+        exe = sys.executable
+        if exe.endswith("pythonw.exe"):
+            exe = exe.replace("pythonw.exe", "python.exe")
 
-        try:
-            output_text = show_output()
-            redirector = TextRedirector(output_text)
+        current_proc = subprocess.Popen(
+            [exe, "-u", os.path.join(BASE_DIR, "..", "runner", "keylang_runner.py"), target],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            creationflags=subprocess.CREATE_NO_WINDOW
+        )
 
-            current_proc = subprocess.Popen([sys.executable, "-u", os.path.join(BASE_DIR, "keylang_runner.py"), target], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        output_text = show_output()
+        redirector = TextRedirector(output_text)
 
-            def pump_output():
-                for line in current_proc.stdout:
-                    redirector.write(line)
-                for line in current_proc.stderr:
-                    redirector.write(line)
+        def pump_output():
+            for line in current_proc.stdout:
+                redirector.write(line)
 
-            threading.Thread(target=pump_output, daemon=True).start()
-
-
-        except Exception as e:
-            print(f"Error: {e}")
+        threading.Thread(target=pump_output, daemon=True).start()
 
 # run keylang
 # run keylang
@@ -93,12 +172,23 @@ def open_editor(filepath=None):
 
     def update_line_numbers():
         line_numbers.config(state="normal")
-        line_numbers.delete("1.0", "end")   # clear old numbers
+        line_numbers.delete("1.0", "end")
         line_count = int(text.index("end-1c").split(".")[0])
         line_text = "\n".join(str(i) for i in range(1, line_count + 1))
         line_numbers.insert("1.0", line_text)
         line_numbers.config(state="disabled")
-
+        
+    def bookmark_check():
+        sidebar.config(state="normal")
+        sidebar.delete("1.0", "end")
+        sidebar.insert("end", "Bookmarks\n", "heading")
+        sidebar.insert("end", "(experimental)\n", "disclaimer")
+        for x in bookmarks:
+            sidebar.insert("end", x + "\n", "center")
+        for bm in bookmarks_location:
+            line_num = bm["location"].split(".")[0]
+            text.tag_add("bookmarked", f"{line_num}.0", f"{line_num}.end+1c")
+        sidebar.config(state="disabled")
 
     style = ttk.Style()
     style.theme_use("default")
@@ -107,16 +197,29 @@ def open_editor(filepath=None):
         troughcolor="#1e1e1e",
         bordercolor="#1e1e1e",
         arrowcolor="#d4d4d4"
-)
+    )
+
+    style.map(
+        "Vertical.TScrollbar",
+        background=[("disabled", "#2a2a2a")],
+        arrowcolor=[("disabled", "#888888")]
+    )
+
     editor = tk.Toplevel()
-    editor.title("Keylang Editor")
+    editor.title(f"Editing {filepath}")
     editor.iconbitmap(os.path.join(BASE_DIR, "Keylang_logo.ico"))
     editor.config(bg="#1e1e1e")
-    container = tk.Frame(editor)
-    container.pack(side="top", fill="both", expand=True)
+    
+    pw = tk.PanedWindow(editor, orient="horizontal", sashrelief="flat", bg="#1e1e1e")
+    pw.pack(fill="both", expand=True)
+    
+    editor_frame = tk.Frame(pw, bg="#1e1e1e")
+    
+    editor.state("zoomed")
 
+    global text
     text = tk.Text(
-        container,
+        editor_frame,
         wrap="none",
         font=("Consolas", 12),
         bg="#1e1e1e",
@@ -124,16 +227,18 @@ def open_editor(filepath=None):
         insertbackground="white",
         undo=True,
         autoseparators=True,
-        maxundo=-1
+        maxundo=-1,
+        relief="flat", highlightbackground="#3a3a3a", highlightcolor="#4a4a4a", highlightthickness=5
     )
 
     line_numbers = tk.Text(
-        container,
+        editor_frame,
         width=4,
         padx=4,
         takefocus=0,
         border=0, 
-        background="#f0f0f0",
+        # background="#f0f0f0",
+        highlightbackground="#1e1e1e", highlightcolor="#1e1e1e", highlightthickness=5,
         state="disabled"
     )
 
@@ -144,6 +249,48 @@ def open_editor(filepath=None):
     )
 
     line_numbers.pack(side="left", fill="y")
+    
+    #tags
+    text.tag_config("bookmarked", background="#365636")
+    #tags
+    
+    def on_line_click(event):
+        index = line_numbers.index(f"@0,{event.y}")
+        line_num = index.split(".")[0] 
+        start = f"{line_num}.0"
+        end   = f"{line_num}.end"
+        line_text = text.get(start, end).strip()
+        # print(bookmarks)
+        # print(f"{line_num}: {line_text}")
+        if not f"{line_num}: {line_text}" in bookmarks:
+            bookmarks_location.append({"label": f"{line_num}: {line_text}", "location": start})
+            bookmarks.append(f"{line_num}: {line_text}")
+            text.tag_add("bookmarked", f"{line_num}.0", f"{line_num}.end+1c")
+        else:
+            bookmarks.remove(f"{line_num}: {line_text}")
+            bookmarks_location[:] = [
+                bm for bm in bookmarks_location
+                if bm["location"] != start
+            ]
+            text.tag_remove("bookmarked", f"{line_num}.0", f"{line_num}.end+1c")
+        bookmark_check()
+        bookmark_save()
+        
+    def on_bookmark_click(event):
+        index = sidebar.index(f"@{event.x},{event.y}")
+        entry = sidebar.get(f"{index} linestart", f"{index} lineend").strip()
+
+        if not entry or entry.startswith("Bookmarks"):
+            return
+
+        for bm in bookmarks_location:
+            if bm["label"] == entry:
+                text.see(bm["location"])
+                text.mark_set("insert", bm["location"])
+                text.focus()
+                break
+
+    line_numbers.bind("<Button-1>", on_line_click)
 
     text.pack(side="right", fill="both", expand=True)
 
@@ -151,9 +298,46 @@ def open_editor(filepath=None):
     text.bind("<Control-y>", lambda e: text.edit_redo())
     text.bind("<Control-Shift-Z>", lambda e: text.edit_redo())
 
-
-    scrollbar = ttk.Scrollbar(container, orient="vertical", command=text.yview, style="Vertical.TScrollbar")
+    scrollbar = ttk.Scrollbar(editor_frame, orient="vertical", command=text.yview, style="Vertical.TScrollbar")
     scrollbar.pack(side="right", fill="y")
+    
+    pw.add(editor_frame)
+    
+    sidebar = tk.Text(
+        pw,
+        font=("Consolas", 12),
+        # width=5,
+        padx=4,
+        takefocus=0,
+        # border=10, 
+        background="#f0f0f0",
+        state="disabled",
+        relief="flat", highlightbackground="#3a3a3a", highlightcolor="#4a4a4a", highlightthickness=5
+    )
+    
+    sidebar.config(
+    background="#1e1e1e",
+    # fg="#80ef80",
+    font=("Consolas", 12)
+    )
+    
+    # sidebar.place(relx=1.0, rely=0.0, anchor="ne", relheight=1.0)
+    pw.add(sidebar)
+    pw.paneconfig(sidebar, minsize=200)
+
+    editor.update_idletasks()
+    total_width = pw.winfo_width()
+    sidebar_width = int(total_width * 0.20)
+    pw.sash_place(0, total_width - sidebar_width, 0)
+    
+    #tags
+    sidebar.tag_configure("heading", justify="center", foreground="#80ef80", font=("Consolas", 15))
+    sidebar.tag_configure("center", justify="center", foreground="#bebebe")
+    sidebar.tag_configure("disclaimer", justify="center", foreground="#545454", font=("Consolas", 8))
+    #tags
+    sidebar.bind("<Button-1>", on_bookmark_click)
+    
+    bookmark_load()
 
     def sync_scroll(first, last):
         scrollbar.set(first, last)
@@ -170,7 +354,7 @@ def open_editor(filepath=None):
     run_button = tk.Button(editor, text="▶ Run", bg="#2a2a2a", fg="#ffffff", activebackground="#80ef80", activeforeground="white", relief="flat", font=("Consolas", 12), borderwidth=0, command=run_script)
     run_button.pack(side="right", fill="x", padx=4, pady=4)
 
-    find_entry = tk.Entry(editor, font=("Consolas", 12), bg="#2a2a2a", fg="white", insertbackground="white")
+    find_entry = tk.Entry(editor, font=("Consolas", 12), bg="#2a2a2a", fg="white", insertbackground="white", relief="flat", highlightbackground="#3a3a3a", highlightcolor="#4a4a4a", highlightthickness=5)
     find_entry.pack(side="left", fill="x", expand=True, padx=4, pady=4)
 
     def find_text(event=None):
@@ -184,6 +368,11 @@ def open_editor(filepath=None):
             current_match_index = -1
             find_text.last_query = query
         if not query:
+            text.tag_remove("found", "1.0", tk.END)
+            text.tag_remove("active_match", "1.0", tk.END)
+            match_positions.clear()
+            current_match_index = -1
+            find_text.last_query = ""
             return
         if not match_positions:
             text.tag_remove("found", "1.0", tk.END)
@@ -237,6 +426,8 @@ def open_editor(filepath=None):
         content = text.get("1.0", "end-1c")
         with open(target, "w") as f:
             f.write(content)
+            
+    bookmark_check()
 
     # highlighting
    # highlighting
@@ -244,38 +435,8 @@ def open_editor(filepath=None):
  # highlighting
 # highlighting
 
-# keywords
+# keywords actually nope later
     def highlight(event=None):
-        text.config(undo=False)
-
-        text.tag_remove("keyword", "1.0", tk.END)
-        keywords = ["False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield", "func", "print_vars", "print_nones", "print_all", "protected", "private", "self", "spawn"]
-
-        for f in keywords:
-            start = "1.0"
-            while True:
-                pos = text.search(rf"\m{f}\M", start, stopindex=tk.END, regexp=True)
-                if not pos:
-                    break
-                end = f"{pos}+{len(f)}c"
-                text.tag_add("keyword", pos, end)
-                start = end
-        text.tag_config("keyword", foreground="#ff5555", font=("Consolas", 12, "bold"))
-
-        for kw in symbols:
-            if kw in keywords:
-                continue
-            start = "1.0"
-            while True:
-                pos = text.search(rf"\m{kw}\M", start, stopindex=tk.END, regexp=True)
-                if not pos:
-                    break
-                end = f"{pos}+{len(kw)}c"
-                text.tag_add("keywordscam", pos, end)
-                start = end
-        text.tag_config("keywordscam", foreground="#c586c0", font=("Consolas", 12))
-
-
 
 # variables
         text.tag_remove("var", "1.0", tk.END)
@@ -304,6 +465,40 @@ def open_editor(filepath=None):
                 start = f"{i + 1}.{match.start()}"
                 end   = f"{i + 1}.{match.end()}"
                 text.tag_add("number", start, end)
+
+
+# real keywords
+        text.config(undo=False)
+
+        text.tag_remove("keyword", "1.0", tk.END)
+
+        for f in keywords:
+            start = "1.0"
+            while True:
+                if f == "'s":
+                    pos = text.search("'s", start, stopindex=tk.END)
+                else:
+                    pos = text.search(rf"\m{f}\M", start, stopindex=tk.END, regexp=True)
+                if not pos:
+                    break
+                end = f"{pos}+{len(f)}c"
+                text.tag_add("keyword", pos, end)
+                start = end
+        text.tag_config("keyword", foreground="#ff5555", font=("Consolas", 12, "bold"))
+
+        for kw in symbols:
+            if kw in keywords:
+                continue
+            start = "1.0"
+            while True:
+                pos = text.search(rf"\m{kw}\M", start, stopindex=tk.END, regexp=True)
+
+                if not pos:
+                    break
+                end = f"{pos}+{len(kw)}c"
+                text.tag_add("keywordscam", pos, end)
+                start = end
+        text.tag_config("keywordscam", foreground="#c586c0", font=("Consolas", 12))
 
 
 
@@ -340,24 +535,59 @@ def open_editor(filepath=None):
                 match = re.search(r"\b\w+$", cleaned)
                 if match:
                     word = match.group()
+                    if word == "s":
+                        continue
                     col = line.find(word)
                     start = f"{i + 1}.{col}"
                     end = f"{i + 1}.{col + len(word)}"
                     text.tag_add("name", start, end)
+                    
 
+
+# embed lua
+        text.tag_remove("embed_lua", "1.0", tk.END)
+        text.tag_config("embed_lua", foreground="#1E90FF", font=("Fira Mono", 12,))
+
+        for match in re.finditer(r"\bembed_lua\b", text.get("1.0", tk.END)):
+            start = f"1.0+{match.start()}c"
+            end   = f"1.0+{match.end()}c"
+            text.tag_add("embed_lua", start, end)    
 
 
 # strings
         text.tag_remove("string", "1.0", tk.END)
         text.tag_config("string", foreground="#ffee8c", font=("Consolas", 12, "italic"))
 
-        matches = re.finditer(r'(["\'])(.*?)(\1)', text.get("1.0", tk.END))
-        for match in matches:
-            start_index = match.start()
-            end_index = match.end()
-            start = f"1.0 + {start_index}c"
-            end = f"1.0 + {end_index}c"
-            text.tag_add("string", start, end)
+        code = text.get("1.0", tk.END)
+
+        for match in re.finditer(r'(["\'])(.*?)(\1)', code):
+            inner = match.group(2)
+            inner_start = match.start(2)
+            after = code[match.end():]
+            
+            if after.startswith("s"):
+                continue
+
+            last = 0
+            for brace_match in re.finditer(r'(?<!\{)\{[^{}]*\}(?!\})', inner):
+                brace_start = brace_match.start()
+                brace_end = brace_match.end()
+
+                if brace_start > last:
+                    gap_start = inner_start + last
+                    gap_end = inner_start + brace_start
+                    text.tag_add("string", f"1.0+{gap_start}c", f"1.0+{gap_end}c")
+
+                last = brace_end
+
+            text.tag_add("string", f"1.0+{match.start()}c", f"1.0+{match.start(2)}c")
+
+            text.tag_add("string", f"1.0+{match.start(2) + len(inner)}c", f"1.0+{match.end()}c")
+
+            if last < len(inner):
+                final_start = inner_start + last
+                final_end = inner_start + len(inner)
+                text.tag_add("string", f"1.0+{final_start}c", f"1.0+{final_end}c")
 
 
 
@@ -382,6 +612,32 @@ def open_editor(filepath=None):
                 end = f"{i + 1}.{col + len(word)}"
                 text.tag_add("comment", start, end)
 
+
+
+# lua contents
+        text.tag_remove("contents", "1.0", tk.END)
+        text.tag_config("contents", foreground="white", font=("Fira Mono", 12,))
+        
+        start = line.find("{")
+        end = line.find("}", start)
+
+        code = text.get("1.0", tk.END)
+
+        for match in re.finditer(r"\bembed_lua\s*\{[^{}]*\}", code):
+            line_start = code.rfind("\n", 0, match.start()) + 1
+            line = code[line_start:match.start()]
+            if re.match(r"^\s*#", line):
+                continue
+
+            full_start = match.start()
+            full_end = match.end()
+
+            real_start = code.find("{", full_start, full_end)
+            real_end = code.find("}", real_start, full_end)
+
+            text.tag_add("contents", f"1.0+{real_start}c", f"1.0+{real_end}c")
+
+
         text.config(undo=True)
 
 
@@ -389,7 +645,7 @@ def open_editor(filepath=None):
         cursor_index = text.index("insert")
         line, col = map(int, cursor_index.split("."))
         line_text = text.get(f"{line}.0", f"{line}.end")
-        prefix = re.findall(r"\w+$", line_text[:col])
+        prefix = re.findall(r"[\w']+$", line_text[:col])
         return prefix[0] if prefix else ""
 
     def show_popup(matches):
@@ -442,12 +698,22 @@ def open_editor(filepath=None):
         autosave()
         highlight()
         update_line_numbers()
+
+        dynamic_symbols = collect_symbols()
+        
+        if lua():
+            better_symbols = list(lua_symbols)
+            better_symbols.extend(dynamic_symbols)
+        else:
+            better_symbols = list(symbols)
+            better_symbols.extend(dynamic_symbols)
+        
         token = get_current_token()
         if token:
-            if token in symbols:
+            if token in better_symbols:
                 hide_popup()
                 return
-            matches = [s for s in symbols if s.startswith(token) and s != token]
+            matches = [s for s in better_symbols if s.startswith(token) and s != token]
             if matches:
                 show_popup(matches)
             else:
@@ -468,8 +734,11 @@ def open_editor(filepath=None):
         hide_popup()
 
     def confirm_top_suggestion(event=None):
-        if popup:
-            lb = popup.winfo_children()[0]
+        global popup
+        if popup and popup.winfo_exists():
+            # descend into the frame to get the listbox
+            frame = popup.winfo_children()[0]
+            lb = frame.winfo_children()[0]
             if lb.size() > 0:
                 select(lb.get("active"))
             return "break"
@@ -480,13 +749,20 @@ def open_editor(filepath=None):
             "[": "]",
             "{": "}",
             "\"": "\"",
-            "'": "'"
+            #"'": "'"
         }
         char = event.char
         if char in pairs:
-            text.insert("insert", char + pairs[char])
-            text.mark_set("insert", "insert-1c")
+            next_char = text.get("insert", "insert+1c")
+            if next_char.strip():
+                text.insert("insert", char)
+            else:
+                text.insert("insert", char + pairs[char])
+                text.mark_set("insert", "insert-1c")
             return "break"
+            
+    def choppy_undo(event):
+        text.edit_separator()
 
 # shortcuts
  # shortcuts
@@ -496,22 +772,32 @@ def open_editor(filepath=None):
 
     def comment_out(event=None):
         if text.tag_ranges("sel"):
-            start = text.index("sel.first linestart")
-            end   = text.index("sel.last lineend")
-            line = start
-            while text.compare(line, "<=", end):
-                if text.get(line, f"{line}+1c") == "#":
-                    text.delete(line, f"{line}+1c")
-                else:
-                    text.insert(line, "#")
-                line = text.index(f"{line}+1line")
+            start_line = int(text.index("sel.first").split(".")[0])
+            end_line   = int(text.index("sel.last").split(".")[0])
+            for line_num in range(start_line, end_line + 1):
+                line_start = f"{line_num}.0"
+                # if text.get(line_start, f"{line_start}+1c") == "#":
+                    # text.delete(line_start, f"{line_start}+1c")
+                # else:
+                text.insert(line_start, "#")
+                # text.edit_separator()
         else:
             line_start = text.index("insert linestart")
             if text.get(line_start, f"{line_start}+1c") == "#":
                 text.delete(line_start, f"{line_start}+1c")
             else:
                 text.insert(line_start, "#")
+            # text.edit_separator()
         return "break"
+        
+    def uncomment_out(event=None):
+        if text.tag_ranges("sel"):
+            start_line = int(text.index("sel.first").split(".")[0])
+            end_line   = int(text.index("sel.last").split(".")[0])
+            for line_num in range(start_line, end_line + 1):
+                line_start = f"{line_num}.0"
+                if text.get(line_start, f"{line_start}+1c") == "#":
+                    text.delete(line_start, f"{line_start}+1c")
 
     def select_line(event=None):
         start = text.index("insert linestart")
@@ -528,6 +814,7 @@ def open_editor(filepath=None):
         target = text.index(f"{start} -1line linestart")
         text.insert(target, line_text)
         text.mark_set("insert", target)
+        # text.edit_separator()
         return "break"
     def line_down(event=None):
         start = text.index("insert linestart")
@@ -539,6 +826,7 @@ def open_editor(filepath=None):
         target = text.index(f"{start} +1line linestart")
         text.insert(target, line_text)
         text.mark_set("insert", target)
+        # text.edit_separator()
         return "break"
 
     def duplicate_line(event=None):
@@ -546,6 +834,7 @@ def open_editor(filepath=None):
         end = text.index("insert lineend +1c")
         line_text = text.get(start, end)
         text.insert(end, line_text)
+        # text.edit_separator()
         return "break"
 
     def select_word(event=None):
@@ -557,7 +846,6 @@ def open_editor(filepath=None):
         return "break"
 
     def tabtabtab(event=None):
-        return
         if text.tag_ranges("sel"):
             start = text.index("sel.first linestart")
             end = text.index("sel.last lineend")
@@ -565,12 +853,12 @@ def open_editor(filepath=None):
             while text.compare(line, "<=", end):
                 text.insert(line, "\t")
                 line = text.index(f"{line}+1line")
+            # text.edit_separator()
             return "break"
         else:
             text.insert("insert", "\t")
             return "break"
     def untabuntabuntab(event=None):
-        return
         if text.tag_ranges("sel"):
             start = text.index("sel.first linestart")
             end = text.index("sel.last lineend")
@@ -580,6 +868,7 @@ def open_editor(filepath=None):
                     text.delete(line, f"{line}+1c")
                 elif text.get(line, f"{line}+4c") == "    ": text.delete(line, f"{line}+4c")
                 line = text.index(f"{line}+1line")
+            # text.edit_separator()
             return "break"
 
     def focus_find_entry(event=None):
@@ -588,11 +877,13 @@ def open_editor(filepath=None):
 
 
     # text.bind("<Tab>", confirm_top_suggestion)
-    text.bind("<Return>", confirm_top_suggestion)
+    text.bind("<Return>", confirm_top_suggestion, add="+")
 
     text.unbind_class("Text", "<Control-k>")
     text.bind("<Control-k>", comment_out)
     text.bind("<Control-slash>", comment_out)
+    text.bind("<Control-Shift-K>", uncomment_out)
+    text.bind("<Control-question>", uncomment_out)
     text.bind("<Control-l>", select_line)
     text.bind("<Alt-Up>", line_up)
     text.bind("<Alt-Down>", line_down)
@@ -605,3 +896,4 @@ def open_editor(filepath=None):
 
     text.bind("<KeyRelease>", on_key)
     text.bind("<KeyPress>", double_pairs)
+    text.bind("<KeyRelease>", choppy_undo, add="+")

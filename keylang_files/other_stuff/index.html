@@ -13,6 +13,16 @@
         color: white;
       }
 header {transition: transform 0.3s ease;}
+.key {color:#ff5555; font-weight:bold;}
+.func {color:#c586c0;}
+.num {color:#61afef;}
+.YELLOW{ color:#ffee8c;}
+.bold {font-weight:bold;}
+.lime {color:#93c47d;}
+.comment {color:gray;}
+
+pre::-webkit-scrollbar {display: none;}
+pre {scrollbar-width: none;}
     </style>
   </head>
   <body style="background-color: #1e1e1e;">
@@ -21,6 +31,7 @@ header {transition: transform 0.3s ease;}
 <a href="index.html" style="display: inline-block;">
 <img src="Keylang_full_logo.png" alt="Keylang full logo" style="height: 50px;">
 </a>
+<a href="#keywords" style="font-family: 'Lato', sans-serif; font-size: 22px; text-decoration: none; margin-left: 30px;"> KEYwords </a>
 <a href="#downloads" style="font-family: 'Lato', sans-serif; font-size: 22px; text-decoration: none; margin-left: 30px;"> Downloads </a>
 </header>
 
@@ -34,7 +45,7 @@ lastY = window.scrollY;
 
 <div style="background-color: #80ef80; padding: 10px; position: relative; text-align: center;">
   <h1 style="font-size: 50px; margin: 0;">Keylang!!!</h1>
-  <p style="font-size: 20px; margin: 0;">v0.1.0</p>
+  <p style="font-size: 20px; margin: 0;">v2.0.0+</p>
   <img src="Keylang_logo.png" alt="Keylang logo" style="height: 100px; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
 </div>
 
@@ -42,23 +53,104 @@ lastY = window.scrollY;
 <br>
 
 <div style="background-color: #aaaaaa; padding: 10px;">
-<h3 style="font-size: 30px; margin: 0;">This key lime pie is half-baked :| ↓</h3>
-<p style="font-size: 20px; margin: 0;">This is an early release. Expect bugs and glitches</p>
+<h3 style="font-size: 30px; margin: 0;">This key lime pie is kinda half-baked :| ↓</h3>
+<p style="font-size: 20px; margin: 0;">This is now no longer an early release! But still be weary</p>
 </div>
 
-    <p>Keylang is a simple Python-like programming LANGuage that puts emphasis on built in functions and KEYwords. <br> It's quite similar to Python right now but it will evolve over time <br> <br>
-      It's powered by Python, so you have to have that downloaded haha <br> </p>
-
-<a href="https://www.python.org/">Here's the Python page</a>
+    <p>Keylang is a simple Python-like programming LANGuage that puts emphasis on built in functions and KEYwords.<br><br>
+      It's powered by Python, so you have to have that downloaded haha
+	  <br>
+	  It can also embed Lua, but you don't need to download that because Keylang comes with the Lua.exe<br>
+	  Very lightweight if you already have Python
+	  <br></p>
+	  
+<a href="https://www.python.org/" style="color:#61afef;"> Here's the Python page </a>
 
       <h2>If you’re coming from Python:</h2>
-      <h4>(which unfortunately you're expected to, these docs aren't very helpful otherwise)</h4>
+      <h4>(which unfortunately you're expected to, these docs DO have a <a href="get_started.html" target="_blank" style="color:#61afef;">Get Started</a> page though)</h4>
+	  <!-- <p> <span class="comment">I worked harder on that page than the main page...</span></p> -->
       <p> def is replaced with func for simplicity<br>
       : is replaced with opening ‘{‘ and closing ‘}’<br>
       () is optional for functions that don’t have arguments. However, calling them you still use () haha<br>
-      Tabs and spaces are optional. Put them anyways they’re helpful<br><br><br>
+      Tabs and spaces are optional. Put them anyways they’re helpful<br>
+	  Variables are defined using the var keyword<br>
+	  's is an alias for the . accessor for better grammar, it may have a few bugs though<br>
+	  <strong>Yep you know Keylang now (ish)</strong><br><br></p>
+	  
+	  <h2>If you’re coming from Lua:</h2>
+      <p>You can embed Lua in Keylang!<br></p>
+<p>To embed Lua, simply type
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 350px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+embed_lua{}
+</code>
+</pre>
+</div>
+and write Lua in the curly brackets! Great if you need Lua for certain sections</p>
+<br>
+	  
+<h1>Setting up</h1>
+<h3>1. Download</h3>
+<p>Easiest part</p>
+<h3>2. Extract files</h3>
+<p>Right click on the zip folder and press "Extract All..." or something else if you're not on Windows idk</p>
+<h3>3. Run the batch file called keylang.bat</h3>
+<p>Open keylang-x.x.x -> keylang_files -> runner<br>
+Right click keylang.bat and press "Run as administrator"<br>
+It does cool stuff and sets up your .kl files</p>
+<h3>4. You're basically done</h3>
+<p> To run your .kl file... from a Python file, just put
+<!-- <div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;"> -->
+<!-- <pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;"> -->
+<!-- <code style="font-size: 16px;"> -->
+<!-- <span class="key">from</span> <span class="bold">runner</span>.<span class="bold">keylang_runner</span> <span class="key">import</span> <span class="bold">run_kl</span> -->
+<!-- <span class="func">run_kl</span>(<span class="YELLOW">"test.kl"</span>) <span class="comment"># replace with file... path you want to run</span> -->
+<!-- </code> -->
+<!-- </pre> -->
+<!-- </div> -->
+<!-- or for more control: -->
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">import</span> <span class="bold">subprocess</span>
+<span class="key">with</span> <span class="func">open</span>(<span class="YELLOW">"test.kl"</span>, <span class="func">"r"</span>) <span class="key">as</span> <span class="bold">f</span>: <span class="comment"># replace with file... path you want to run</span>
+    <span class="bold">kl_source</span> = <span class="bold">f</span>.<span class="func">read</span>()
+<span class="bold">result</span> = <span class="bold">subprocess</span>.<span class="func">run</span>([<span class="YELLOW">"python"</span>, <span class="YELLOW">"other_stuff/preprocess.py"</span>], <span class="bold">input</span>=<span class="bold">kl_source</span>, <span class="bold">text</span>=<span class="key">True</span>, <span class="bold">capture_output</span>=<span class="key">True</span>) <span class="comment"># replace this line if needed</span>
+<span class="bold">python_code</span> = <span class="bold">result</span>.<span class="bold">stdout</span>
+<span class="func">exec</span>(<span class="bold">python_code</span>, {<span class="YELLOW">"__name__":</span> <span class="YELLOW">"__main__"}</span>)
+</code>
+</pre>
+</div>
+And it will run the file, preprocessed to Python!!!!! <br><br>
+</p>
+	  
+<h2>Preview of valid Keylang</h2>
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">vari_name</span> = <span class="func">dict</span>(<span class="YELLOW">"a"</span> = <span class="func">random</span>(<span class="num">67</span>, <span class="num">68</span>), <span class="YELLOW">"b"</span> = <span class="num">2763</span>)
 
-<h2>Helpful new functions and KEYwords:</h2>
+<span class="key">func</span> <span class="lime">cool_func</span>{
+    <span class="func">print</span>(<span class="YELLOW">"hi"</span>)
+	<span class="lime">loop</span>(<span class="num">3</span>){
+		<span class="func">wait</span>(<span class="num">1</span>)
+		<span class="key">self 's</span> <span class="bold">scale</span> *= <span class="func">random</span>(<span class="bold">vari_name</span>)
+		}
+	}
+	
+<span class="func">cool_func</span>()
+	
+<span class="comment"># prints hi, then, repeating 3 times, waits 1 second before multiplying self's scale by a random value from the dictionary vari_name.</span>
+</code>
+</pre>
+</div>
+<!-- <p> <span class="comment"> yep pretty similar to python currently </span> </p> -->
+
+<!-- <br> -->
+
+<section id="keywords" style="margin-top:80px;">
+<h1>Helpful new functions and KEYwords:</h1>
 
 <table border="1" cellpadding="8" cellspacing="0" style="margin:auto; border-collapse: collapse; font-family: Lato, sans-serif;">
   <tr style="background-color:#80ef80;">
@@ -78,6 +170,10 @@ lastY = window.scrollY;
     <td>Only runs the code in the block if all previous statement were false AND the condition is true</td>
   </tr>-->
   <tr>
+    <td>var (v2.0.0+)</td>
+    <td>Defines a variable</td>
+  </tr>
+  <tr>
     <td>loop(n) {}</td>
     <td>Loops the code in the block an amount of times</td>
   </tr>
@@ -90,8 +186,12 @@ lastY = window.scrollY;
     <td>Won’t repeat code in the block after running it once</td>
   </tr>
   <tr>
+    <td>'s</td>
+    <td>Keyword alias of the . accessor, useful when you're fed up with . and want good grammar</td>
+  </tr>
+  <tr>
     <td>array()</td>
-    <td>Creates an array</td>
+    <td>Creates a LIST not array</td>
   </tr>
   <tr>
     <td>dict()</td>
@@ -99,10 +199,10 @@ lastY = window.scrollY;
   </tr>
   <tr>
     <td>the_array_name[index]</td>
-    <td>Access one of an array’s value</td>
+    <td>Access one of an LIST’s value</td>
   </tr>
   <tr>
-    <td>dictionary_array_name[x]</td>
+    <td>dictionary_array_name[key]</td>
     <td>Access one of a dictionaries value</td>
   </tr>
   <tr>
@@ -112,6 +212,10 @@ lastY = window.scrollY;
   <tr>
     <td>random_range(from, to)</td>
     <td>Picks one of the numbers in the range of the numbers provided</td>
+  </tr>
+  <tr>
+    <td>embed_lua {}</td>
+    <td>Runs Lua code</td>
   </tr>
   <tr>
     <td>spawn func_name()</td>
@@ -125,6 +229,22 @@ lastY = window.scrollY;
     <td>protected func_name()</td>
     <td>Alias of 1 underscore</td>
   </tr>
+  <tr>
+    <td>print_vars</td>
+    <td>Prints all variables and their values</td>
+  </tr>
+  <tr>
+    <td>print_nones</td>
+    <td>Prints all variables with a value of None</td>
+  </tr>
+  <tr>
+    <td>print_all</td>
+    <td>Prints a LOT of stuff basically</td>
+  </tr>
+  <tr>
+    <td>looprate</td>
+    <td>Gets the rate of the last time it was called. Still may be buggy but should work for now</td>
+  </tr>
 </table>
 
 <h2>Some shortcuts you should know when using the editor:</h2>
@@ -135,8 +255,12 @@ lastY = window.scrollY;
     <th>What it does</th>
   </tr>
   <tr>
-    <td>Ctrl K / Ctrl /</td>
+    <td>Ctrl K or Ctrl /</td>
     <td>Comment out</td>
+  </tr>
+  <tr>
+    <td>Ctrl Shift K or Ctrl Shift /</td>
+    <td>Uncomment out</td>
   </tr>
   <tr>
     <td>Ctrl F</td>
@@ -164,25 +288,63 @@ lastY = window.scrollY;
   </tr>
 </table>
 
-  </body>
-</html>
-
-
 
 <section id="downloads" style="margin-top:80px;">
   <h1>Downloads</h1>
   <p> <strong> You can download it directly from here </strong> </p>
+  
+  <p>v2.x.x</p>
+  
+  <a href="https://github.com/bald55/Keylang/releases/download/v2.0.0/keylang-2.0.0.zip" 
+  style="display: inline-block;
+  background-color: #80ef80;
+  color: teal;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 2px;
+  font-weight: bold;
+  font-family: 'Lato', sans-serif;">
+  Download Keylang v2.0.0</a>
+  
+  <br><p>v1.x.x</p>
+  
+  <a href="https://github.com/bald55/Keylang/releases/download/v1.0.0/keylang-1.0.0.zip" 
+  style="display: inline-block;
+  background-color: #80ef80;
+  color: teal;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 2px;
+  font-weight: bold;
+  font-family: 'Lato', sans-serif;">
+  Download Keylang v1.0.0</a>
+  
+  <br><p>Or if for some reason you want the early releases:</p>
+  
+  <a href="https://github.com/bald55/Keylang/releases/download/v0.2.0/keylang-0.2.0.zip" 
+  style="display: inline-block;
+  background-color: #80ef80;
+  color: teal;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 2px;
+  font-weight: bold;
+  font-family: 'Lato', sans-serif;">
+  Download Keylang v0.2.0</a>
+  
   <a href="https://github.com/bald55/Keylang/releases/download/v0.1.1/keylang-0.1.1.zip" 
   style="display: inline-block;
-  background-color: red;
-  color: white;
+  background-color: #80ef80;
+  color: teal;
   padding: 12px 24px;
   text-decoration: none;
   border-radius: 2px;
   font-weight: bold;
   font-family: 'Lato', sans-serif;">
   Download Keylang v0.1.1</a>
-  <p> <strong> Or from the GitHub repository </strong> </p>
+  
+  <br><br>
+  <p> <strong> Or you can download from the GitHub repository </strong> </p>
   <a href="https://github.com/bald55/Keylang" 
   style="display: inline-block;
   background-color: #80ef80;
@@ -194,3 +356,16 @@ lastY = window.scrollY;
   font-family: 'Lato', sans-serif;">
   Go to GitHub repo</a>
 </section>
+
+<h2>Feedback</h2>
+<p> PLEASE if you find bugs (very likely), send them here <br>
+<a href="https://github.com/bald55/Keylang/issues" target="_blank" style="color:#61afef;">
+Open an issue on GitHub
+
+  </body>
+</html>
+
+</a>
+</a>
+</p>
+

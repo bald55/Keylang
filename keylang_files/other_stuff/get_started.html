@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Keylang - Get started</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+<style>
+body {
+font-family: 'Lato', sans-serif;
+text-align: center;
+margin: 40px;
+line-height: 1.6;
+color: white;
+}
+
+header {transition: transform 0.3s ease;}
+.key {color:#ff5555; font-weight:bold;}
+.func {color:#c586c0;}
+.num {color:#61afef;}
+.YELLOW{ color:#ffee8c;}
+.bold {font-weight:bold;}
+.lime {color:#93c47d;}
+.comment {color:gray;}
+
+pre::-webkit-scrollbar {display: none;}
+pre {scrollbar-width: none;}
+
+hr {
+border: none;
+border-top: 5px solid #4e4e4e;
+margin: 20px 0;
+}
+
+.code-container {
+background-color: #1e1e1e;
+padding: 10px;
+max-width: 350px;
+margin: 20px auto;
+border-radius: 6px;
+}
+
+pre {
+<!-- display: flex; -->
+justify-content: center;
+background-color: #2e2e2e;
+padding: 10px;
+border-radius: 4px;
+overflow-x: auto;
+}
+pre.quiz {
+display: flex;
+justify-content: center;
+}
+
+
+code {
+outline: none;
+}
+
+.correct {
+color: #80ef80;
+}
+</style>
+</head>
+<body style="background-color: #1e1e1e;">
+
+<div style="background-color: #80ef80; padding: 10px; position: relative; text-align: center;">
+<h1 style="font-size: 50px; margin: 0;">Keylang - Get started</h1>
+<p style="font-size: 20px; margin: 0;">Version 2.0.0+</p>
+<img src="Keylang_logo.png" alt="Keylang logo" style="height: 100px; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+</div>
+
+<h2>If you know Python:</h2>
+<p>Keylang should be very easy to learn!</p>
+<h2>Otherwise, here you'll get the basics of Keylang and... coding in general</h2>
+<br>
+<h2>DO YOU understand this code?</h2>
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">vari_name</span> = <span class="func">dict</span>(<span class="YELLOW">"a"</span> = <span class="func">random</span>(<span class="num">67</span>, <span class="num">68</span>), <span class="YELLOW">"b"</span> = <span class="num">2763</span>)
+
+<span class="key">func</span> <span class="lime">cool_func</span>{
+    <span class="func">print</span>(<span class="YELLOW">"hi"</span>)
+	<span class="lime">loop</span>(<span class="num">3</span>){
+		<span class="func">wait</span>(<span class="num">1</span>)
+		<span class="key">self 's</span> <span class="bold">scale</span> *= <span class="func">random</span>(<span class="bold">vari_name</span>)
+		}
+	}
+	
+<span class="func">cool_func</span>()
+	
+<span class="comment"># prints hi, then, repeating 3 times, waits 1 second before multiplying self's scale by a random value from the dictionary vari_name.</span>
+</code>
+</pre>
+</div>
+<p>If yes, and you have little programming experience, then that shows how readable Keylang (and Python) is!</p>
+<p>If no, and you have a lot of programming experience, then that's not good for Keylang</p>
+<br>
+<h1>This page will teach you how to code basic Keylang, and show you how that code works</h1>
+<p>While assuming you don't know any programming</p>
+<br>
+
+
+
+<h2>The most basic function</h2>
+
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 350px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="func">print</span>(<span class="YELLOW">"hi"</span>)
+</code>
+</pre>
+</div>
+
+<p>This is a function that PRINTS "hi". Where? To the stdout (standard output). Basically it prints "hi" somewhere the screen.
+<br>
+If you run a .py file with print("hi") in it, it will quickly open a terminal (the output area), print hi, then immediately close. You'll only see hi for a a few milliseconds, but it works
+<br>
+However, .kl files do NOT support this yet. It's an early release ok
+<br><br>
+Even this simple function has a lot of complexity in it. Why, thou may ponder whilst gandering at the general direction of the brackets and quotation marks, are those labyrinthine syntax decisions required?
+<br><br>
+Print is the first part. It is the (built in) function you're calling. When calling functions, they must have brackets after them to contain the argument.
+<br>
+Right now you would have:
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 350px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="func">print</span>()
+</code>
+</pre>
+</div>
+BUT inside the () is... NOTHING! Which means right now it prints nothing.
+<br>
+If you want it to print something, you need to put an ARGUMENT inside the brackets, and it will print whatever's in the brackets
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 350px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="func">print</span>(<span class="bold">hi</span>)
+</code>
+</pre>
+</div>
+BUTTTTTTTTTTTTT THIS DOES NOT WORK
+<br>
+If you've done programming before, you'll likely know why. You are printing the VARIABLE hi, not the TEXT hi
+<br>
+If the variable hi wasn't defined, it will error. If it was defined, it will print whatever hi's value is
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 450px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">hi</span> = <span class="num">5</span>
+<span class="comment"># Defines the variable hi with a value of 5</span>
+
+<span class="func">print</span>(<span class="bold">hi</span>)
+<span class="comment"># This will print 5 instead of hi</span>
+</code>
+</pre>
+</div>
+If you want it to print the TEXT hi, you need to put it in quotation marks to state that it is a STRING.
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 350px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="func">print</span>(<span class="YELLOW">"hi"</span>)
+</code>
+</pre>
+</div>
+Here, you directly state that it is a STRING and not a variable. THEN it will print hi
+</p>
+<br>
+
+With the knowledge you now know, simply type code to print the word yahoo (case sensitive)
+</p>
+
+<div class="code-container">
+<pre class="quiz">
+<code id="editable" contenteditable="true" spellcheck="false" style="width:350px; display:block;">
+</code>
+</pre>
+</div>
+
+<script>
+const editable = document.getElementById("editable");
+editable.addEventListener("input", () => {
+if (editable.innerText.trim() === 'print("yahoo")' || (editable.innerText.trim() === "print('yahoo')")) {
+editable.classList.add("correct");
+} else {
+editable.classList.remove("correct");
+}
+});
+</script>
+<br> <hr>
+
+
+<h2>Variables and data types</h2>
+
+<p>Some words you type... are a type (literally).
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 450px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="YELLOW">"STRING"</span>
+<span class="comment"># Specifies that it is TEXT (string)</span>
+<span class="YELLOW">'STRING'</span>
+<span class="comment"># Same thing for single quotation marks</span>
+
+<span class="num">5</span>
+<span class="comment"># Specifies that it is a WHOLE NUMBER (integer)</span>
+
+<span class="num">5.0</span>
+<span class="comment"># Specifies that it is a DECIMAL NUMBER (float)</span>
+
+<span class="key">True</span>
+<span class="comment"># Specifies that it is a TRUE or FALSE (boolean)</span>
+
+<span class="func">array</span>(<span class="num">5</span>, <span class="num">2763</span>, <span class="YELLOW">"string"</span>)
+<span class="comment"># Can contain multiple values</span>
+</code>
+</pre>
+</div>
+Above is only the basics, there's more
+<br>
+If you printed the above, it would be
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 450px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="func">print</span>(<span class="YELLOW">"STRING"</span>)
+<span class="comment"># Prints STRING</span>
+
+<span class="func">print</span>(<span class="num">5</span>)
+<span class="comment"># Prints 5</span>
+
+<span class="func">print</span>(<span class="num">5.0</span>)
+<span class="comment"># Prints 5.0</span>
+
+<span class="func">print</span>(<span class="key">True</span>)
+<span class="comment"># Prints True</span>
+
+<span class="func">print</span>(<span class="func">array</span>(<span class="num">5</span>, <span class="num">2763</span>, <span class="YELLOW">"string"</span>))
+<span class="comment"># Prints 5, 2763, "string"</span>
+</code>
+</pre>
+</div>
+ALL of these print exactly what is looks like, because none of them are variables.
+<br>
+When you want a variable, you type the var keyword, then a word that isn't a built in word
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 650px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">this_is_a_var</span> = <span class="num">5</span>
+<span class="comment"># Creates a variable named this_is_a_var with the value of 5</span>
+
+<span class="key">var</span> <span class="key">not</span> = <span class="num">5</span>
+<span class="comment"># Errors, cannot assign value to any reserved keywords</span>
+
+<span class="key">var</span> <span class="bold">print</span> = <span class="num">5</span>
+<span class="comment"># Works, but horrible idea, as the print() function would stop working</span>
+</code>
+</pre>
+</div>
+YOU CAN assign data types OTHER than integers. For example:
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 650px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">this_is_a_var</span> = <span class="YELLOW">"hi"</span>
+<span class="comment"># Creates a variable named this_is_a_var with the value of "hi"</span>
+<span class="func">print</span>(<span class="bold">this_is_a_var</span>)
+<span class="comment"># Prints hi</span>
+</code>
+</pre>
+</div>
+AND you CAN do operations with data types of the same data type:
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 650px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="func">print</span>(<span class="num">6</span> * <span class="num">7</span>)
+<span class="comment"># Prints 42</span>
+<span class="func">print</span>(<span class="YELLOW">"hi"</span> + <span class="YELLOW">'there'</span>)
+<span class="comment"># Prints hithere (no spaces)</span>
+</code>
+</pre>
+</div>
+
+Why variables when you can just type numbers?
+<br>
+BECAUSE YOU CAN CHANGE THE VARIABLES
+<br>
+THEY'RE CALLED VARIABLES FOR A REASON they VARY!!!
+<br><br>
+If you changed the value of a variable, stuff that use the variable will be altered to using the new value
+<br><br>
+To change variables, you have the basic math operators you have, BUT with = in front of them!!!
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">vari_name</span> = <span class="num">0</span>
+<span class="comment"># Creates a variable named vari_name with the value of 0</span>
+
+<span class="bold">vari_name</span> += <span class="num">5</span>
+<span class="comment"># Adds 5 to vari_name, new value is 5</span>
+
+<span class="bold">vari_name</span> *= <span class="num">5</span>
+<span class="comment"># Multiplies vari_name by 5, new value is 25</span>
+
+<span class="bold">vari_name</span> /= <span class="num">5</span>
+<span class="comment"># Divides vari_name by 5, new value is 5</span>
+
+<span class="bold">vari_name</span> = <span class="num">5</span>
+<span class="comment"># It's reverse for this. == would mean "is equal to" and = would mean "WILL be equal to"</span>
+<span class="comment"># Sets vari_name to 5, new value is... also 5</span>
+</code>
+</pre>
+</div>
+How would you add 5 to a variable called woah_vari_name
+</p>
+
+<div class="code-container">
+<pre class="quiz">
+<code id="editable1" contenteditable="true" spellcheck="false" style="width:350px; display:block;">
+</code>
+</pre>
+</div>
+
+<script>
+const editable1 = document.getElementById("editable1");
+editable1.addEventListener("input", () => {
+  const text = editable1.innerText.trim();
+  const pattern = /^woah_vari_name\s*\+=\s*5$/;
+  if (pattern.test(text)) {
+    editable1.classList.add("correct");
+  } else {
+    editable1.classList.remove("correct");
+  }
+});
+</script>
+<br> <hr>
+
+<p>Now, looking back at the code from the start:
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">vari_name</span> = <span class="func">dict</span>(<span class="YELLOW">"a"</span> = <span class="func">random</span>(<span class="num">67</span>, <span class="num">68</span>), <span class="YELLOW">"b"</span> = <span class="num">2763</span>)
+
+<span class="key">func</span> <span class="lime">cool_func</span>{
+    <span class="func">print</span>(<span class="YELLOW">"hi"</span>)
+	<span class="lime">loop</span>(<span class="num">3</span>){
+		<span class="func">wait</span>(<span class="num">1</span>)
+		<span class="key">self 's</span> <span class="bold">scale</span> *= <span class="func">random</span>(<span class="bold">vari_name</span>)
+		}
+	}
+	
+<span class="func">cool_func</span>()
+	
+<span class="comment"># prints hi, then, repeating 3 times, waits 1 second before multiplying self's scale by a random value from the dictionary vari_name.</span>
+</code>
+</pre>
+</div>
+You now understand how print() works! As well as wait(), where you're using the function wait with the argument 1 in between the brackets.
+<br>
+You also can understand random() a little, it takes one of the RANDOM numbers that vari_name's value contains. You'll learn more about this later
+<br>
+What's func though
+</p>
+<br>
+
+<h2>Functions (the non built in ones)</h2>
+<p>Functions are different from Python in Keylang.
+<br><br>
+Functions are defined using the func keyword. Calling a function with the function's name will execute the code in the function.
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">func</span> <span class="lime">cool_func</span> {
+<span class="comment"># creates a function called cool_func</span>
+    <span class="func">print</span>(<span class="YELLOW">"hi"</span>)
+}
+	
+<span class="func">cool_func</span>()
+<span class="comment"># Calls the function named cool_func, therefore printing hi</span>
+</code>
+</pre>
+</div>
+print() is a built in function. cool_func() is a CUSTOM function.
+<br>
+The "{" signifies the START of the function, and "}" signifies the END. If a variable is defined INSIDE a function's curly brackets, they only exist INSIDE that function
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">func</span> <span class="lime">cool_func</span> {
+    <span class="func">print</span>(<span class="YELLOW">"this is in the function"</span>)
+    <span class="bold">var_name</span> = <span class="YELLOW">"this only exists in the function"</span>
+}
+<span class="func">print</span>(<span class="YELLOW">"this is out of the function"</span>)
+</code>
+</pre>
+</div>
+
+When cool_func is called, you must add brackets at the end, even though there's nothing inside the brackets.
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">cool_func</span>
+<span class="comment"># WRONG</span>
+
+<span class="func">cool_func</span>()
+<span class="comment"># RIGHT!!!</span>
+</code>
+</pre>
+</div>
+Now... assuming there's a function called uncool_func, how would you call it
+</p>
+
+<div class="code-container">
+<pre class="quiz">
+<code id="editable2" contenteditable="true" spellcheck="false" style="width:350px; display:block;">
+</code>
+</pre>
+</div>
+
+<script>
+const editable2 = document.getElementById("editable2");
+editable2.addEventListener("input", () => {
+if (editable2.innerText.trim() === 'uncool_func()') {
+editable2.classList.add("correct");
+} else {
+editable2.classList.remove("correct");
+}
+});
+</script>
+<br><hr>
+
+
+<p>Now, looking back at the code from the start AGAIN:
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">vari_name</span> = <span class="func">dict</span>(<span class="YELLOW">"a"</span> = <span class="func">random</span>(<span class="num">67</span>, <span class="num">68</span>), <span class="YELLOW">"b"</span> = <span class="num">2763</span>)
+
+<span class="key">func</span> <span class="lime">cool_func</span>{
+    <span class="func">print</span>(<span class="YELLOW">"hi"</span>)
+	<span class="lime">loop</span>(<span class="num">3</span>){
+		<span class="func">wait</span>(<span class="num">1</span>)
+		<span class="key">self 's</span> <span class="bold">scale</span> *= <span class="func">random</span>(<span class="bold">vari_name</span>)
+		}
+	}
+	
+<span class="func">cool_func</span>()
+	
+<span class="comment"># prints hi, then, repeating 3 times, waits 1 second before multiplying self's scale by a random value from the dictionary vari_name.</span>
+</code>
+</pre>
+</div>
+You now understand how print(), wait(), random() somewhat, and func {} works!
+<br>
+You also understand loop, it's basically like a function, it has "{" that signifies the start and "}" for the end. print("hi") is OUTSIDE of the loop curly brackets, so it doesn't get looped
+<br>
+What's dict() though
+</p><br>
+
+<h2>Lists and dictionaries</h2>
+<p> Looking back:
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 450px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="func">print</span>(<span class="func">array</span>(<span class="num">5</span>, <span class="num">2763</span>, <span class="YELLOW">"string"</span>))
+<span class="comment"># Prints 5, 2763, "string"</span>
+</code>
+</pre>
+</div>
+This is a LIST, not an ARRAY despite what it says. Can be a little bit confusing for programmers, I'll probably change that later
+<br>
+Lists can contain multiple values. To make a list, just type array(). Inside array's brackets, you put the values you want to put, seperated by commas
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="bold">the_LIST_name</span> = <span class="func">array</span>(<span class="bold">value1</span>, <span class="bold">value2</span>, <span class="YELLOW">"you_can_add_as_much_as_you_want"</span>)
+</code>
+</pre>
+</div>
+<br>
+If you want to access one of the LIST's values from a variable, you type the variable's name and a set of square brackets, with a number in them
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">var_name</span> = <span class="func">array</span>(<span class="num">5</span>, <span class="num">2763</span>, <span class="YELLOW">"string"</span>))
+
+<span class="func">print</span>(<span class="bold">var_name</span>[<span class="num">0</span>])
+<span class="comment"># Prints the FIRST number in the list, which would be 5</span>
+
+<span class="func">print</span>(<span class="bold">var_name</span>[<span class="num">1</span>] + <span class="num">5</span>)
+<span class="comment"># Prints the SECOND number in the list PLUS 5, which would be 2768</span>
+
+<span class="func">print</span>(<span class="bold">var_name</span>[<span class="num">2</span>])
+<span class="comment"># Prints the THIRD number in the list, which would be "string"</span>
+</code>
+</pre>
+</div>
+Yeah it's weird
+<br>
+You would need to type 0 to get the first number of the list
+<br><br>
+dict() functions similarly to array(). The difference is that the values inside dict's brackets need to be assigned to stuff inside dict()
+<br> And instead of doing vari_name[number], you would do vari_name[variable that number is assigned to]
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">var_LIST</span> = <span class="func">array</span>(<span class="num">5</span>, <span class="num">2763</span>)
+<span class="key">var</span> <span class="bold">var_dict</span> = <span class="func">dict</span>(<span class="YELLOW">"a"</span> = <span class="num">5</span>, <span class="YELLOW">"b"</span> =  <span class="num">2763</span>)
+<span class="comment"># You don't need to create these variables, but you can use created variables</span>
+
+<span class="func">print</span>(<span class="bold">var_LIST</span>[<span class="num">0</span>])
+<span class="comment"># Prints the FIRST number in the list, which would be 5</span>
+
+<span class="func">print</span>(<span class="bold">var_dict</span>[<span class="num">"a"</span>])
+<span class="comment"># Prints whatever "a" is assigned to in the dictionary, which would be 5</span>
+</code>
+</pre>
+</div>
+Looking back:
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">vari_name</span> = <span class="func">dict</span>(<span class="YELLOW">"a"</span> = <span class="func">random</span>(<span class="num">67</span>, <span class="num">68</span>), <span class="YELLOW">"b"</span> = <span class="num">2763</span>)
+</code>
+</pre>
+</div>
+Yeah you basically know what random() does at this point, it picks a random number from the MULTIPLE values inside its brackets
+<br><br>
+Here's a hard question that's actually a test of my explanation
+<br>
+If there was a there was vari_name = dict("a" = "yay", "b" = "nay"), how would you print yay
+</p>
+
+<div class="code-container">
+<pre class="quiz">
+<code id="editable3" contenteditable="true" spellcheck="false" style="width:350px; display:block;">
+</code>
+</pre>
+</div>
+
+<script>
+const editable3 = document.getElementById("editable3");
+editable3.addEventListener("input", () => {
+if (editable3.innerText.trim() === 'print(vari_name["a"])') {
+editable3.classList.add("correct");
+} else {
+editable3.classList.remove("correct");
+}
+});
+</script>
+<br><hr>
+
+<p>Now, looking back at the code from the start yet AGAIN:
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: left; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">var</span> <span class="bold">vari_name</span> = <span class="func">dict</span>(<span class="YELLOW">"a"</span> = <span class="func">random</span>(<span class="num">67</span>, <span class="num">68</span>), <span class="YELLOW">"b"</span> = <span class="num">2763</span>)
+
+<span class="key">func</span> <span class="lime">cool_func</span>{
+    <span class="func">print</span>(<span class="YELLOW">"hi"</span>)
+	<span class="lime">loop</span>(<span class="num">3</span>){
+		<span class="func">wait</span>(<span class="num">1</span>)
+		<span class="key">self 's</span> <span class="bold">scale</span> *= <span class="func">random</span>(<span class="bold">vari_name</span>)
+		}
+	}
+	
+<span class="func">cool_func</span>()
+	
+<span class="comment"># prints hi, then, repeating 3 times, waits 1 second before multiplying self's scale by a random value from the dictionary vari_name.</span>
+</code>
+</pre>
+</div>
+You now understand... everything
+<br>
+EXCEPT for this one line:
+<div style="background-color: #1e1e1e; padding: 10px; max-width: 700px; margin: 20px auto;">
+<pre style="text-align: center; background-color: #2e2e2e; padding: 10px; border-radius: 4px; overflow-x: auto;">
+<code style="font-size: 16px;">
+<span class="key">self 's</span> <span class="bold">scale</span> *= <span class="func">random</span>(<span class="bold">vari_name</span>)
+</code>
+</pre>
+</div>
+Well, "self" is just the current object that the script is on
+<br>
+"'s" accesses self's properties. A dot (.) works perfectly fine too.
+<br>
+"scale" is one of self's built in properties. It's the variable for the... scale of the object
+<br><br>
+Right now we have "self 's scale", and we ALSO have "*= random(vari_name)"
+<br><br>
+"*=" you know what this does
+<br>
+"random(vari_name)" takes a random value from vari_name's dictionary
+<br><br>
+So this code multiplies the scale of the object which this script is on by a random number chosen from vari_name.
+</p><br>
+
+<h2>Congratulations!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>You're pro Keylang (and half pro Python cause of the similarity) now!!!!!!!!!</h2>
+<p>The rest you'll need to know is on the main page, and on the Python website cause they're THAT similar
+
+</body>
+</html>
