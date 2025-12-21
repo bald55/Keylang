@@ -2,7 +2,7 @@
 ## - A programming language that runs on Python and embeds Lua!!! It puts a lot of emphasis on built in functions and KEYwords
 ##
 
-## **v2.0.0 is OUT!!!**
+## **v2.0.0 is OUT!!!** Working on v3.0.0 starting 2025/12/21
 
 Latest version:
 # Keylang v2.0.0 (NOT AS very early yes)
