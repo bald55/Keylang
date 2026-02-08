@@ -20,7 +20,9 @@ It's quite similar to Python right now but it will evolve over time
 ## Upcoming v3.0.0 features
 <sub><sup>
 v3.0.0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-PHILOSOPHY IS NOW... GAMES!!! Keylang wasn’t exactly supposed to be a general purpose programming language, and I only really care about games. So yeah Keylang is game oriented now (which means performance must be TOP NOTCH)
+PHILOSOPHY IS NOW... GAMES!!! Keylang wasn’t exactly supposed to be a general purpose programming language, and I only really care about games. So yeah Keylang is game oriented now (which means performance must be TOP NOTCH!!!!!!!!!! and stuff)
+</sub></sup>
+
 
 Changes
 - Async functions automatically run. It’s a feature trust
@@ -42,4 +44,3 @@ Additions
   - Can also have completely empty keywords (ex. keyword yay) for cosmetic purposes [TO DO]
 - “print_python” keyword. Prints the unpreprocessed Python for when you’re confused or when I was confused and there’s a weird Keylang bug that you need to report
 - Updated website… again! Somewhat extreme style revamp [TO DO]
-</sub></sup>
