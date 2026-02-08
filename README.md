@@ -19,51 +19,51 @@ It's quite similar to Python right now but it will evolve over time
 
 ## Upcoming v3.0.0 features
 <sub><sup>
-v3.0.0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+v3.0.0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>
 </sub></sup>
 <sub><sup>
-PHILOSOPHY IS NOW... GAMES!!! Keylang wasn’t exactly supposed to be a general purpose programming language, and I only really care about games. So yeah Keylang is game oriented now (which means performance must be TOP NOTCH!!!!!!!!!! and stuff)
+PHILOSOPHY IS NOW... GAMES!!! Keylang wasn’t exactly supposed to be a general purpose programming language, and I only really care about games. So yeah Keylang is game oriented now (which means performance must be TOP NOTCH!!!!!!!!!! and stuff)<br>
 </sub></sup>
 
 <sub><sup>
-Changes
+Changes<br>
 <sub><sup>
--Async functions automatically run. It’s a feature trust
+-Async functions automatically run. It’s a feature trust<br>
 <sub><sup>
--Keyword alias of EVERY syntax [TO DO]
+-Keyword alias of EVERY syntax [TO DO]<br>
 <sub><sup>
-  -(} = end)(== = is)() [TO DO]
+  -(} = end)(== = is)() [TO DO]<br>
 <sub><sup>
--Variants added. Variants of a function accessed with a tilde (~)
+-Variants added. Variants of a function accessed with a tilde (~)<br>
 <sub><sup>
-  -“wait” function has variant “wait~async”. The async version of wait.
+  -“wait” function has variant “wait~async”. The async version of wait.<br>
 <sub><sup>
-    -Also has the variant “wait~until”. Waits until a condition is met. [TO DO]
+    -Also has the variant “wait~until”. Waits until a condition is met. [TO DO]<br>
 <sub><sup>
-  -Default “wait” function changed to uses time.sleep()
+  -Default “wait” function changed to uses time.sleep()<br>
 <sub><sup>
--Lua embed changed to use LuaJIT
+-Lua embed changed to use LuaJIT<br>
 <sub><sup>
-  -Scripts can be moved around now without Lua embedding breaking
+  -Scripts can be moved around now without Lua embedding breaking<br>
 <sub><sup>
--Bundles Python runtime [TO DO]
+-Bundles Python runtime [TO DO]<br>
 sub><sup>
--Uses NumPy for number stuff [TO DO]
+-Uses NumPy for number stuff [TO DO]<br>
 <sub><sup>
 
 <sub><sup>
-Additions
+Additions<br>
 <sub><sup>
--“when” keyword. Listens for WHEN an event occurs. Allows you to state how frequent it checks inside the parentheses
+-“when” keyword. Listens for WHEN an event occurs. Allows you to state how frequent it checks inside the parentheses<br>
 <sub><sup>
-  -Also a “when~once” variant. Checks UNTIL the thing happens, then stops checking [TO DO]
+  -Also a “when~once” variant. Checks UNTIL the thing happens, then stops checking [TO DO]<br>
 <sub><sup>
--Keyboard input detectors. Use “if key(the_key) {}” to check if the key was pressed, if True, executes the code in the block
+-Keyboard input detectors. Use “if key(the_key) {}” to check if the key was pressed, if True, executes the code in the block<br>
 <sub><sup>
--“keyword” keyword. Makes a custom keyword that compiles (?) into the code it was assigned (ex. keyword yay = cube[x] += 1) [TO DO]
+-“keyword” keyword. Makes a custom keyword that compiles (?) into the code it was assigned (ex. keyword yay = cube[x] += 1) [TO DO]<br>
 <sub><sup>
-  -Can also have completely empty keywords (ex. keyword yay) for cosmetic purposes [TO DO]
+  -Can also have completely empty keywords (ex. keyword yay) for cosmetic purposes [TO DO]<br>
 <sub><sup>
--“print_python” keyword. Prints the unpreprocessed Python for when you’re confused or when I was confused and there’s a weird Keylang bug that you need to report
+-“print_python” keyword. Prints the unpreprocessed Python for when you’re confused or when I was confused and there’s a weird Keylang bug that you need to report<br>
 <sub><sup>
 -Updated website… again! Somewhat extreme style revamp [TO DO]
