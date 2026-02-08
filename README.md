@@ -16,11 +16,12 @@ It's quite similar to Python right now but it will evolve over time
 ### https://bald55.github.io/keylang-site/
 
 ----------------------------------------------------------------
+----------------------------------------------------------------
 
 ## Upcoming v3.0.0 features
 
 v3.0.0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-PHILOSOPHY IS NOW... GAMES!!! Keylang wasn’t exactly supposed to be a general purpose programming language, and I only really care about games. So yeah Keylang is game oriented now (which means performance must be TOP NOTCH)
+PHILOSOPHY IS NOW... GAMES!!! Keylang wasn’t exactly supposed to be a general purpose programming language, and I only really care about games. So yeah Keylang is game oriented now (which means performance must be TOP NOTCH!!!!!!!!!! and stuff)
 
 Changes
 - Async functions automatically run. It’s a feature trust
