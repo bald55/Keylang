@@ -1,3 +1,5 @@
+# Please do NOT download the ZIP from here, and instead go to the Github releases. There's weird stuff going on right now
+
 Latest version:
 # Keylang v3.0.0
 
