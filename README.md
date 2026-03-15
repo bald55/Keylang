@@ -1,4 +1,4 @@
-# Please do NOT download the ZIP from here, and instead go to the Github releases. There's weird stuff going on right now
+## Downloading the ZIP from here is unreliable. If you want to, download it from the Github releases.
 
 Latest version:
 # Keylang v3.0.0
