@@ -1,18 +1,50 @@
-x = 2
-data = array("a", 1, "b", 2)
-data2 = dict("a" = 2, "#" = 2763)
-data3 = dict("r" = None)
-null = None
+var x = 2
+var data = array("a", 1, "b", 2)
+var data2 = dict("a" = 2, "#" = 2763)
+var data3 = dict("r" = None)
+var null = None
 
-func bg {
-loop {
-print("this runs in the background")
+var yeahhhhh = False
+
+print("Lua embed test")
+
+embed_lua {
+print("this is lua")
+
+-- comment
+local sum = 2 + 3
+print("2 + 3 = " .. sum)
+
+-- thy shalleth work!
+for i = 1, 5 do
+    print("Lua loop iteration " .. i)
+end
+}
+
+print("Wow that worked")
 wait(1)
-}
-}
+
+print(f"loop spawn bg null None once best []{1+1} test")
+# f string yeahhh {}}}}{}}
+
+func bg do
+ print("this runs in the background")
+ wait~thread(1){
+  spawn bg()
+ end
+end
 
 spawn bg()
+
+wait
+
+keyword yay = for x2 in range(5): print(x2)
+yay
+
+wait(0.5)
+
 #iejfniuwiiu comment
+#lets try curly brackets and weird indentation :D
 func cool (   ) {
  once    {
  print_nones
@@ -43,33 +75,56 @@ func cool (   ) {
   cool()
   return
  }
+ func yeah{
+  wait(2.5)
+  yeahhhhh = True
+ }
+ spawn yeah()
  cooler()
 }
 
-func cooler {
+func cooler do
  print()
- wait(0.5)
- print_vars
+ print("cooler func was called, waiting 2.5 seconds")
+ wait~until(yeahhhhh == True)
+# print_vars
  print()
+ print("grtkyujgtr")
  wait(2)
  print(random   (  9, 10, 2763)	)
  print(random_range(-2763,2763))
  # print(random.randint(1, 49))
  print(random(data))
  print(random(data2))
-}
+end
 
-if x {
+if x do
  print("hello from braces")
- if x {
+ if x do
   print("Hello world! ooh nested")
- }
- loop(3) {
+ end
+ loop(3) do
   print("hi")
- }
- loop(1){
+ end
+ loop(1) do
   print("hi2")
- }
+ end
 # print_all
 cool()
-}
+end
+
+print("-------------------------------------------")
+print("TRY PRESSING THE SPACE BAR")
+print("-------------------------------------------")
+
+#loop{
+#wait(0.1)
+when(0.2) key(space) do
+print("-----")
+print("Space bar pressed")
+print("-----")
+end
+loop do
+wait(1)
+end
+#print_python
